@@ -10,17 +10,20 @@ import stagpy
 import numpy as np
 from stagpy import stagyydata
 import matplotlib.pyplot as plt
-model = 'w0213'
+model = 'test04'
 path = '/Users/chingchen/Desktop/data/'
 figpath = '/Users/chingchen/Desktop/figure/'
+plt.rcParams["font.family"] = "Times New Roman"
 shot_list = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39]
+shot_list = [101]
 gif = 0
 mp4 = 0
 plotting = 0
 
 
-for shot in shot_list:
-# if plotting:
+# for shot in shot_list:
+if plotting:
+    shot = 101
     kk1 = np.loadtxt(path+model+'_get_meshes_x_of_'+str(shot)+'.txt')
     kk2 = np.loadtxt(path+model+'_get_meshes_z_of_'+str(shot)+'.txt')
     kk3 = np.loadtxt(path+model+'_get_meshes_T_of_'+str(shot)+'.txt')
@@ -41,7 +44,7 @@ for shot in shot_list:
     ax.set_title(model+' at snapshot '+str(shot),fontsize = 26)
     ax2.set_aspect('equal')
     cmap = plt.cm.get_cmap('rainbow')
-    colorbar = ax2.scatter(kk1,kk2,c= np.log10(eta3),cmap = cmap, vmin = -4,vmax = 4)
+    colorbar = ax2.scatter(kk1,kk2,c= np.log10(eta3),cmap = cmap, vmin = -2.5,vmax = 2.5)
     ax2.axis('off')
     cax = plt.axes([0.445, 0.05, 0.15, 0.05])
     cc2=fig.colorbar(colorbar, ax=ax2,cax=cax,orientation='horizontal')
@@ -55,9 +58,40 @@ for shot in shot_list:
     cc3=fig.colorbar(colorbar, ax=ax3,cax=cax,orientation='horizontal')
     cc3.set_label(label='Density', size=25)
     cc3.ax.tick_params(labelsize=20)
-    fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
-    fig.gca()
-    plt.close(fig)
+    #fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
+    #fig.gca()
+    #plt.close(fig)
+for shot in shot_list:
+# if plotting:
+    kk1 = np.loadtxt(path+model+'_get_meshes_x_of_'+str(shot)+'.txt')
+    kk2 = np.loadtxt(path+model+'_get_meshes_z_of_'+str(shot)+'.txt')
+    kk3 = np.loadtxt(path+model+'_get_meshes_T_of_'+str(shot)+'.txt')
+    eta3 = np.loadtxt(path+model+'_get_meshes_eta_of_'+str(shot)+'.txt')
+    # rho3 = np.loadtxt(path+model+'_get_meshes_rho_of_'+str(shot)+'.txt')
+
+    fig,(ax,ax2) = plt.subplots(1,2,figsize=(8,5))
+    
+    ax.set_aspect('equal')
+    cmap = plt.cm.get_cmap('RdBu_r')
+    colorbar = ax.scatter(kk1,kk2,c= kk3,cmap = cmap, vmin = 0,vmax = 1)
+    ax.axis('off')
+    cax = plt.axes([0.157, 0.15, 0.3, 0.05])
+    cc1=fig.colorbar(colorbar, ax=ax,cax=cax,orientation='horizontal')
+    cc1.ax.tick_params(labelsize=15)
+    cc1.set_label(label='Temperature', size=15)
+    cc1.ax.yaxis.set_label_position('left')
+    ax.set_title(model+' at time '+str(shot/1000),fontsize = 26)
+    ax2.set_aspect('equal')
+    cmap = plt.cm.get_cmap('rainbow')
+    colorbar = ax2.scatter(kk1,kk2,c= np.log10(eta3),cmap = cmap, vmin = -2.5,vmax = 2.5)
+    ax2.axis('off')
+    cax = plt.axes([0.585, 0.15, 0.30, 0.05])
+    cc2=fig.colorbar(colorbar, ax=ax2,cax=cax,orientation='horizontal')
+    cc2.ax.tick_params(labelsize=15)
+    cc2.set_label(label='Viscosity', size=15)
+    #fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
+    #fig.gca()
+    #plt.close(fig)
 #-----------------------------creat GIF-----------------------------------------
 if gif: 
     from PIL import Image
