@@ -13,11 +13,12 @@ from stagpy import stagyydata
 import matplotlib.pyplot as plt
 model = 'w0801'
 path = '/Users/chingchen/Desktop/data/'
-path = '/lfs/jiching/'
+#path = '/lfs/jiching/'
 figpath = '/Users/chingchen/Desktop/figure/'
-figpath = '/lfs/jiching/figure/'
+#figpath = '/lfs/jiching/figure/'
 data = stagyydata.StagyyData(path+model)
-plotting_3field = 1
+plotting_3field = 0
+plotting_Tv = 1
 gif = 1
 mp4 = 1
 end = 401
@@ -57,6 +58,35 @@ if plotting_3field:
         fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
         fig.gca()
         plt.close(fig)
+if plotting_Tv:
+    for shot in range(end+2,end):
+        kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
+        eta1,eta2,eta3,eta4 = field.get_meshes_fld(data.snaps[shot],'eta')
+
+        fig,(ax,ax2) = plt.subplots(1,3,figsize=(8,5)) 
+        ax.set_aspect('equal')
+        cmap = plt.cm.get_cmap('RdBu_r')
+        colorbar = ax.scatter(kk1,kk2,c= kk3,cmap = cmap, vmin = 0,vmax = 1)
+        ax.axis('off')
+        cax = plt.axes([0.165, 0.05, 0.15, 0.05])
+        cc1=fig.colorbar(colorbar, ax=ax,cax=cax,orientation='horizontal')
+        cc1.ax.tick_params(labelsize=20)
+        cc1.set_label(label='Temperature', size=25)
+        cc1.ax.yaxis.set_label_position('left')
+        ax.set_title(model+' at time '+str(shot/1000),fontsize = 26)
+        ax2.set_aspect('equal')
+        cmap = plt.cm.get_cmap('rainbow')
+        colorbar = ax2.scatter(kk1,kk2,c= np.log10(eta3),cmap = cmap, vmin = -4,vmax = 4)
+        ax2.axis('off')
+        cax = plt.axes([0.445, 0.05, 0.15, 0.05])
+        cc2=fig.colorbar(colorbar, ax=ax2,cax=cax,orientation='horizontal')
+        cc2.ax.tick_params(labelsize=20)
+        cc2.set_label(label='Viscosity', size=25)
+        cmap = plt.cm.get_cmap('afmhot_r')
+
+        # fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
+        # fig.gca()
+        # plt.close(fig)
 #-----------------------------creat GIF-----------------------------------------
 if gif: 
     from PIL import Image
