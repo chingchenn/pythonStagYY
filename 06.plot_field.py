@@ -13,15 +13,15 @@ from stagpy import stagyydata
 import matplotlib.pyplot as plt
 model = 'w0801'
 path = '/Users/chingchen/Desktop/data/'
-#path = '/lfs/jiching/'
+path = '/lfs/jiching/'
 figpath = '/Users/chingchen/Desktop/figure/'
-#figpath = '/lfs/jiching/figure/'
+figpath = '/lfs/jiching/figure/'
 data = stagyydata.StagyyData(path+model)
 plotting_3field = 0
 plotting_Tv = 1
-gif = 1
-mp4 = 1
-end = 401
+gif = 0
+mp4 = 0
+end = 300
 if plotting_3field:
     for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
@@ -59,11 +59,12 @@ if plotting_3field:
         fig.gca()
         plt.close(fig)
 if plotting_Tv:
-    for shot in range(end+2,end):
+    print('plotting')
+    for shot in range(end-2,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         eta1,eta2,eta3,eta4 = field.get_meshes_fld(data.snaps[shot],'eta')
 
-        fig,(ax,ax2) = plt.subplots(1,3,figsize=(8,5)) 
+        fig,(ax,ax2) = plt.subplots(1,2,figsize=(8,5)) 
         ax.set_aspect('equal')
         cmap = plt.cm.get_cmap('RdBu_r')
         colorbar = ax.scatter(kk1,kk2,c= kk3,cmap = cmap, vmin = 0,vmax = 1)
@@ -84,9 +85,10 @@ if plotting_Tv:
         cc2.set_label(label='Viscosity', size=25)
         cmap = plt.cm.get_cmap('afmhot_r')
 
-        # fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
-        # fig.gca()
-        # plt.close(fig)
+        fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
+        print(model+'_'+'snapshot_'+str(shot)+'_field.png')
+        fig.gca()
+        plt.close(fig)
 #-----------------------------creat GIF-----------------------------------------
 if gif: 
     from PIL import Image
