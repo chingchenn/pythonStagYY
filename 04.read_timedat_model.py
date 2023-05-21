@@ -56,12 +56,9 @@ if fig_Nu_t:
         ax.plot(ff.time, ff.Nu_top,color = newcolors[kk],lw=5,label = 'Nu_top')
         ax.plot(ff.time, ff.Nu_bot,color = newcolors[kk+1],lw=3,label = 'Nu_bot')
     
-    ax.tick_params(axis='x', labelsize=labelsize)
-    ax.tick_params(axis='y', labelsize=labelsize)
-    ax.spines['bottom'].set_linewidth(bwith)
-    ax.spines['top'].set_linewidth(bwith)
-    ax.spines['right'].set_linewidth(bwith)
-    ax.spines['left'].set_linewidth(bwith)
+    ax.tick_params(labelsize=labelsize)
+    for axis in ['top','bottom','left','right']:
+                ax.spines[axis].set_linewidth(bwith)
     ax.grid()
     # ax.set_xlim(0.09,0.12)
     # ax.set_ylim(7,8.2)
@@ -84,12 +81,9 @@ if fig_F_t:
     # ax2.plot(ff.time, ff.F_bot*(f**2),color = newcolors[kk+1],lw=3,label = 'F_bot')
     # ax2.plot(ff.time, ff.F_top,color = newcolors[kk],lw=5,label = 'F_top')
         
-    ax2.tick_params(axis='x', labelsize=labelsize)
-    ax2.tick_params(axis='y', labelsize=labelsize)
-    ax2.spines['bottom'].set_linewidth(bwith)
-    ax2.spines['top'].set_linewidth(bwith)
-    ax2.spines['right'].set_linewidth(bwith)
-    ax2.spines['left'].set_linewidth(bwith)
+    ax2.tick_params(labelsize=labelsize)
+    for axis in ['top','bottom','left','right']:
+                ax2.spines[axis].set_linewidth(bwith)
     ax2.grid()
     # ax.set_xlim(0.09,0.12)
     # ax2.set_ylim(0,6)
@@ -106,12 +100,9 @@ if fig_T :
     # ax3.plot(ff.time, ff.Tmean,color = newcolors[kk],lw=5,label = 'Tmean')
     # ax3.plot(ff.time, ff.Tmean,color = newcolors[kk+1],lw=3,label = 'F_bot')
     
-    ax3.tick_params(axis='x', labelsize=labelsize)
-    ax3.tick_params(axis='y', labelsize=labelsize)
-    ax3.spines['bottom'].set_linewidth(bwith)
-    ax3.spines['top'].set_linewidth(bwith)
-    ax3.spines['right'].set_linewidth(bwith)
-    ax3.spines['left'].set_linewidth(bwith)
+    ax3.tick_params( labelsize=labelsize)
+    for axis in ['top','bottom','left','right']:
+                ax3.spines[axis].set_linewidth(bwith)
     ax3.grid()
     ax3.set_xlim(0,0.6)
     # ax.set_ylim(7,8.2)

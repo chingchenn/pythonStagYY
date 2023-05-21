@@ -20,7 +20,7 @@ mp4 = 1
 labelsize = 30
 bwith = 3
 fig_advection_model = 1
-fig_temperature_model = 0
+fig_temperature_model = 1
 newcolors = ['#2F4F4F','#4682B4','#CD5C5C','#708090',
               '#AE6378','#282130','#7E9680','#24788F',
               '#849DAB','#EA5E51','#35838D','#4198B9',
@@ -53,12 +53,9 @@ if fig_advection_model:
     ax2.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
         
     for aa in [ax,ax2]:
-        aa.tick_params(axis='x', labelsize=labelsize)
-        aa.tick_params(axis='y', labelsize=labelsize)
-        aa.spines['bottom'].set_linewidth(bwith)
-        aa.spines['top'].set_linewidth(bwith)
-        aa.spines['right'].set_linewidth(bwith)
-        aa.spines['left'].set_linewidth(bwith)
+        aa.tick_params(labelsize=labelsize)
+        for axis in ['top','bottom','left','right']:
+                aa.spines[axis].set_linewidth(bwith)
         aa.grid()
         aa.set_ylim(0,1)
     ax2.set_xlim(0,1)
@@ -104,12 +101,9 @@ if fig_temperature_model:
     fig2,(ax3) = plt.subplots(1,1,figsize=(12,6))
     ax3.plot(time,1-new_thickness,color = '#4198B9',lw=4)
     for aa in [ax3]:
-        aa.tick_params(axis='x', labelsize=labelsize)
-        aa.tick_params(axis='y', labelsize=labelsize)
-        aa.spines['bottom'].set_linewidth(bwith)
-        aa.spines['top'].set_linewidth(bwith)
-        aa.spines['right'].set_linewidth(bwith)
-        aa.spines['left'].set_linewidth(bwith)
+        aa.tick_params(labelsize=labelsize)
+        for axis in ['top','bottom','left','right']:
+            aa.spines[axis].set_linewidth(bwith)
         aa.grid()
     ax3.set_xlabel('Step',fontsize = labelsize)
     ax3.set_ylabel('Thickness',fontsize = labelsize)
