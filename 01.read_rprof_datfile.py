@@ -7,13 +7,14 @@ Created on Tue Feb 28 22:44:59 2023
 """
 
 
-import os
+import os    
 datapath = '/Users/chingchen/Desktop/data/'
 path = '/Users/chingchen/Desktop/model/'
 model = 'w0209'
-for mm in range(1,2):
-    model = 'w020'+str(mm)
-    model = 'w0209'
+for mm in range(0,1):
+    
+    model = 'w101'+str(mm)
+    #model = 'w0209'
     file = datapath+model+'_rprof.dat'
     sourceFileName = file
     sourceFileData = open(file,'r')
@@ -37,5 +38,5 @@ for mm in range(1,2):
             for line in new_data[i*p+1:(i+1)*p]:
                 destFileData.write(line+'\n')
         destFileData.close()
-    print(model+'==DONE==')
+    print(model+'==DONE==',m-1)
 

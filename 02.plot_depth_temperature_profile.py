@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Times New Roman"
 
-model = 'w0207'
+model = 'w0804'
 path = '/Users/chingchen/Desktop/model/'
 figpath = '/Users/chingchen/Desktop/figure/StagYY/'
 mp4 = 0
@@ -48,19 +48,15 @@ for i in range(1,2):
     ax3.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
     
     for aa in [ax,ax2,ax3]:
-        aa.tick_params(axis='x', labelsize=labelsize)
-        aa.tick_params(axis='y', labelsize=labelsize)
-        aa.spines['bottom'].set_linewidth(bwith)
-        aa.spines['top'].set_linewidth(bwith)
-        aa.spines['right'].set_linewidth(bwith)
-        aa.spines['left'].set_linewidth(bwith)
+        aa.tick_params( labelsize=labelsize)
         aa.grid()
         aa.set_ylim(0,1)
         aa.set_xlim(0,1)
         aa.set_xlabel('Temperature',fontsize = labelsize)
+        for axis in ['top','bottom','left','right']:
+                aa.spines[axis].set_linewidth(bwith)
     # ax2.set_xlabel('Temperature',fontsize = labelsize)
     ax.set_ylabel('Depth',fontsize = labelsize)
-    
     ax.set_title('Time = '+str(i),fontsize = labelsize)
     ax.text(0.45,0.9,'Ea = 10^5',fontsize = labelsize+8)
     ax2.text(0.45,0.9,'Ea = 10^6',fontsize = labelsize+8)
@@ -109,12 +105,9 @@ if mp4 :
 #                       sep = '\\s+',header = None,names = header_list)    
 #     ax.plot(ff.vzabs*ff.Tmean,ff.r,color = newcolors[kk],lw=5,label = model)
 #     # ax.plot(ff.Tmean,ff.r,color = newcolors[kk],lw=5,label = model)
-#     ax.tick_params(axis='x', labelsize=labelsize)
-#     ax.tick_params(axis='y', labelsize=labelsize)
-#     ax.spines['bottom'].set_linewidth(bwith)
-#     ax.spines['top'].set_linewidth(bwith)
-#     ax.spines['right'].set_linewidth(bwith)
-#     ax.spines['left'].set_linewidth(bwith)
+#     ax.tick_params(labelsize=labelsize)
+#     for axis in ['top','bottom','left','right']:
+#               ax.spines[axis].set_linewidth(bwith)
 #     ax.grid()
 #     ax.set_ylim(0,1)
 #     # ax.set_xlim(0,1)

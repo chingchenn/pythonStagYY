@@ -49,11 +49,13 @@ model_list = ['w0204','w0216','w0228']
 # model_list = ['w0204','w0205','w0206']
 model_list = ['w0207','w0208','w0209']
 model_list = ['w0219','w0220','w0221']
+model_list = ['w0801','w0802','w0803','w0804']
+model_list = ['w0201','w0801','w0213','w0225']
 # model_list = ['test03','test01','test04']
-label_list = ['Ea=1e5','Ea=1e6','Ea=1e7','Ea=1e8']
-label_list = ['f=0.7','f=0.5','f=0.3']
-#label_list = ['Ra = 1e5','Ra = 1e4','Ra = 1e3']
-end_list = [315,315,150,1260]
+# label_list = ['Ea=1e5','Ea=1e6','Ea=1e7','Ea=1e8']
+#label_list = ['f=0.7','f=0.5','f=0.3']
+label_list = ['Ra = 1e5','Ra=3.2e4','Ra = 1e4','Ra = 1e3']
+end_list = [1500,1560,1500,300]
 if fig_advection_model:
     fig,(ax,ax2) = plt.subplots(1,2,figsize=(12,12))
     for kk, model in enumerate(model_list):
@@ -63,19 +65,16 @@ if fig_advection_model:
         ax2.plot(ff.Tmean,ff.r,color = newcolors[kk],lw=5,label = label_list[kk])
         
     for aa in [ax,ax2]:
-        aa.tick_params(axis='x', labelsize=labelsize)
-        aa.tick_params(axis='y', labelsize=labelsize)
-        aa.spines['bottom'].set_linewidth(bwith)
-        aa.spines['top'].set_linewidth(bwith)
-        aa.spines['right'].set_linewidth(bwith)
-        aa.spines['left'].set_linewidth(bwith)
+        aa.tick_params(labelsize=labelsize)
         aa.grid()
         aa.set_ylim(0,1)
+        for axis in ['top','bottom','left','right']:
+                aa.spines[axis].set_linewidth(bwith)
     ax2.set_xlim(0,1)
     ax.set_xlabel('Temperature x Vz',fontsize = labelsize)
     ax2.set_xlabel('Temperature ',fontsize = labelsize)
     ax.set_ylabel('Depth',fontsize = labelsize)
-    ax2.legend(fontsize = 30)
+    # ax2.legend(fontsize = 30)
     # ax.set_title('Snapshot = '+str(end),fontsize = labelsize)
         
 
@@ -116,12 +115,9 @@ for kk, model in enumerate(model_list):
         fig2,(ax3) = plt.subplots(1,1,figsize=(12,6))
         ax3.plot(time,1-new_thickness,color = newcolors[kk],lw=4,label = label_list[kk])
         for aa in [ax3]:
-            aa.tick_params(axis='x', labelsize=labelsize)
-            aa.tick_params(axis='y', labelsize=labelsize)
-            aa.spines['bottom'].set_linewidth(bwith)
-            aa.spines['top'].set_linewidth(bwith)
-            aa.spines['right'].set_linewidth(bwith)
-            aa.spines['left'].set_linewidth(bwith)
+            aa.tick_params(labelsize=labelsize)
+            for axis in ['top','bottom','left','right']:
+                aa.spines[axis].set_linewidth(bwith)
             aa.grid()
         ax3.set_xlabel('Step',fontsize = labelsize)
         ax3.set_ylabel('Thickness',fontsize = labelsize)
