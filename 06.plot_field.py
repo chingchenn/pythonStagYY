@@ -11,7 +11,7 @@ import numpy as np
 from stagpy import field
 from stagpy import stagyydata
 import matplotlib.pyplot as plt
-model = 'w0801'
+model = 'w0216'
 path = '/Users/chingchen/Desktop/data/'
 path = '/lfs/jiching/'
 figpath = '/Users/chingchen/Desktop/figure/'
@@ -20,10 +20,11 @@ figpath = '/lfs/jiching/figure/'
 plt.rcParams["font.family"] = "Times New Roman"
 data = stagyydata.StagyyData(path+model)
 plotting_3field = 0
-plotting_Tv = 1
-gif = 0
-mp4 = 0
-end = 300
+plotting_Tv = 0
+plotting_T = 0
+gif = 1
+mp4 = 1
+end = 1501
 if plotting_3field:
     for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
@@ -62,7 +63,7 @@ if plotting_3field:
         plt.close(fig)
 if plotting_Tv:
     print('plotting')
-    for shot in range(end-2,end):
+    for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         eta1,eta2,eta3,eta4 = field.get_meshes_fld(data.snaps[shot],'eta')
 
@@ -89,23 +90,53 @@ if plotting_Tv:
         fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
         fig.gca()
         plt.close(fig)
+
+if plotting_T:
+    for shot in range(1000,1201):
+        kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
+
+        fig,(ax) = plt.subplots(1,figsize=(5,5)) 
+        ax.set_aspect('equal')
+        cmap = plt.cm.get_cmap('RdBu_r')
+        colorbar = ax.scatter(kk1,kk2,c= kk3,cmap = cmap, vmin = 0,vmax = 1)
+        ax.axis('off')
+        ax.set_title(model+' at time '+str(shot/1000),fontsize = 26)
+
+        fig.savefig(figpath+model+'_'+'snapshot_'+str(shot)+'_field.png')
+        fig.gca()
+        plt.close(fig)
 #-----------------------------creat GIF-----------------------------------------
 if gif: 
     from PIL import Image
      
-    # Create the frames
+   # frames = []
+   # for shot in  range(1,1000):
+   #     img=figpath+model+'_'+'snapshot_'+str(shot)+'_field.png'
+   #     new_frame = Image.open(img)
+   #     frames.append(new_frame)
+   # frames[0].save(figpath+'png_to_gif.gif', format='GIF', append_images=frames[1:], 
+   #                save_all=True, duration=40, loop=0)
     frames = []
-    for shot in  range(1,end):
+    for shot in  range(1000,1500):
         img=figpath+model+'_'+'snapshot_'+str(shot)+'_field.png'
         new_frame = Image.open(img)
         frames.append(new_frame)
-     
-    # Save into a GIF file that loops forever
-    frames[0].save(figpath+'png_to_gif.gif', format='GIF', append_images=frames[1:], 
+    frames[0].save(figpath+'png_to_gif2.gif', format='GIF', append_images=frames[1:], 
                    save_all=True, duration=40, loop=0)
+    #frames = []
+    #for shot in  range(2000,end):
+    #    img=figpath+model+'_'+'snapshot_'+str(shot)+'_field.png'
+    #    new_frame = Image.open(img)
+    #    frames.append(new_frame)
+    #frames[0].save(figpath+'png_to_gif3.gif', format='GIF', append_images=frames[1:], 
+    #               save_all=True, duration=40, loop=0)
     
 #-----------------------------creat mp4-----------------------------------------    
 if mp4:
     import moviepy.editor as mp
     clip = mp.VideoFileClip(figpath+'png_to_gif.gif')
     clip.write_videofile(figpath+'fieldStagYY'+model+".mp4")
+    clip = mp.VideoFileClip(figpath+'png_to_gif2.gif')
+    clip.write_videofile(figpath+'fieldStagYY'+model+"2.mp4")
+    clip = mp.VideoFileClip(figpath+'png_to_gif3.gif')
+    clip.write_videofile(figpath+'fieldStagYY'+model+"3.mp4")
