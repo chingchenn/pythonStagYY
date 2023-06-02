@@ -9,15 +9,20 @@ Created on Sun May 21 14:22:28 2023
 import os
 import numpy as np
 import pandas as pd
+import function_savedata as fs
 import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 
 
 ### PATH ###
 path = '/Users/chingchen/Desktop/data/'
+path = '/lfs/jiching/data/'
 workpath = '/Users/chingchen/Desktop/StagYY_Works/'
+workpath = '/lfs/jiching/ScalingLaw_model/'
 modelpath = '/Users/chingchen/Desktop/model/'
+modelpath = '/lfs/jiching/ScalingLaw_model/'
 figpath = '/Users/chingchen/Desktop/figure/StagYY/'
+figpath = '/lfs/jiching/figure/'
 
 ### SETTING ###
 
@@ -51,20 +56,19 @@ scatter_size = 100
 
 ### DO WHAT ###
 
-split_dat = 0
-save_data = 0
+split_dat = 1
+save_data = 1
 plot_average = 0
 fig_compare_T = 0
 fig_compare_Fu = 0
-fig_compare_Nu = 1
-running_average = 0
-plot_scaling_result = 1
+fig_compare_Nu = 0
+running_average = 1
+plot_scaling_result = 0
 
 
 if split_dat:
-    for mm in range(16,17):
-        model = 'w10'+str(mm)
-        # model = 'w0804'
+    for jj in range(len(model_information)):
+        model = model_information.model[jj]
         file = path+model+'_rprof.dat'
         sourceFileName = file
         sourceFileData = open(file,'r')
@@ -195,8 +199,16 @@ if running_average:
         ccc=DataFrame(average_fl_bot_array,columns=['average_fl_bot'])
         ddd=DataFrame(average_fl_top_array,columns=['average_fl_top'])
         fff=DataFrame(average_t_array,columns=['Tm'])
-        n6 = pd.concat([moodel,f,Ra,Ea,tt1,tt2,lid,aaa,bbb,ccc,ddd,fff],axis=1)
-        n6.to_csv(path+'average_data'+'.csv',index=False)
+        ra = np.array(model_information.Ra0)
+        gamma = np.log(np.array(model_information.Ea))
+        nu = average_Nu_bot_array
+        xx1 = np.ones(len(nu))*1e-5
+        xx2 = np.ones(len(nu))*1e-3
+        thetam = (average_t_array)
+        rsurf = ra/np.exp(gamma/2)
+        fs.save_6txt('scalinglaw_inversion',path,rsurf,gamma,thetam,xx1,nu,xx2)
+#        n6 = pd.concat([moodel,f,Ra,Ea,tt1,tt2,lid,aaa,bbb,ccc,ddd,fff],axis=1)
+#        n6.to_csv(path+'average_data'+'.csv',index=False)
 x=[]
 y=[]
 if plot_scaling_result:
@@ -302,44 +314,3 @@ if plot_scaling_result:
         # ax7.set_yticks(np.arange(0, 20, 1))
         ax7.tick_params(axis='both', which='major',labelsize=labelsize)
         # ax7.set_ylim(1,10)
-        
-    
-    # ax8.set_xscale('log')
-    # # ax8.set_yscale('log')
-    
-   
-    from scipy.optimize import curve_fit
-    newX = np.logspace(3, 6, base=10)  # Makes a nice domain for the fitted curves.
-                                   # Goes from 10^0 to 10^3
-                                   # This avoids the sorting and the swarm of lines.
-
-    # Let's fit an exponential function.  
-    # This looks like a line on a lof-log plot.
-    def myExpFunc(x, a, b):
-        return a * np.power(x, b)
-    popt, pcov = curve_fit(myExpFunc, x, y)
-    plt.plot(newX, myExpFunc(newX, *popt), 'r-', 
-             label="({0:.3f}*x**{1:.3f})".format(*popt))
-    print("Exponential Fit: y = (a*(x**b))")
-    print("\ta = popt[0] = {0}\n\tb = popt[1] = {1}".format(*popt))
-    
-    # # Let's fit a more complicated function.
-    # # This won't look like a line.
-    # def myComplexFunc(x, a, b, c):
-    #     return a * np.power(x, b) + c
-    # popt, pcov = curve_fit(myComplexFunc, x, y)
-    # plt.plot(newX, myComplexFunc(newX, *popt), 'g-', 
-    #          label="({0:.3f}*x**{1:.3f}) + {2:.3f}".format(*popt))
-    # print("Modified Exponential Fit: y = (a*(x**b)) + c")
-    # print("\ta = popt[0] = {0}\n\tb = popt[1] = {1}\n\tc = popt[2] = {2}".format(*popt))
-
-    # from sklearn.linear_model import LinearRegression
-    # model = LinearRegression(fit_intercept=True)
-    # print(model,Ra0,average_Nu_bot)
-    # model.fit(np.array(x).reshape(1,-1)[:, np.newaxis],np.array(y))
-    
-    # xfit = np.linspace(1e3, 1e5)
-    # yfit = model.predict(xfit[:, np.newaxis])
-    
-    # plt.scatter(x, y)
-    # plt.plot(xfit, yfit);
