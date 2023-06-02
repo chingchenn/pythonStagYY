@@ -15,14 +15,16 @@ from pandas.core.frame import DataFrame
 
 
 ### PATH ###
-path = '/Users/chingchen/Desktop/data/'
-path = '/lfs/jiching/data/'
-workpath = '/Users/chingchen/Desktop/StagYY_Works/'
-workpath = '/lfs/jiching/ScalingLaw_model/'
-modelpath = '/Users/chingchen/Desktop/model/'
-modelpath = '/lfs/jiching/ScalingLaw_model/'
-figpath = '/Users/chingchen/Desktop/figure/StagYY/'
-figpath = '/lfs/jiching/figure/'
+local = 1
+if local:
+    path = '/Users/chingchen/Desktop/data/'
+    workpath = '/Users/chingchen/Desktop/StagYY_Works/'
+    modelpath = '/Users/chingchen/Desktop/model/'
+else:
+    path = '/lfs/jiching/data/'
+    workpath = '/lfs/jiching/ScalingLaw_model/'
+    modelpath = '/lfs/jiching/ScalingLaw_model/'
+    figpath = '/lfs/jiching/figure/'
 
 ### SETTING ###
 
@@ -93,7 +95,7 @@ if split_dat:
                     destFileData.write(line+'\n')
             destFileData.close()
         print(model+'==DONE==',m-1)
-if running_average:
+if running_average: # Using the moving window to choose the time window 
     # savedata array (model number length)
     leng = len(model_information)
     model_array = np.zeros(leng)
@@ -135,7 +137,7 @@ if running_average:
         if len(tt1[(anb>np.mean(anb)+np.std(anb))])==0:
             print('========== '+model+' Cannot find suitble time window ==========')
             continue
-        time_window1=np.max(tt1[(anb>np.mean(anb)+np.std(anb))])+0.01 # minimum time + 0.5 
+        time_window1=np.max(tt1[(anb>np.mean(anb)+np.std(anb))])+0.01 # minimum time + 0.01
         time_window2=np.max(tt2[(anb<np.mean(anb)+np.std(anb))]) # maximum time - 0.5
         if plot_average:
             fig,(ax,ax2) = plt.subplots(2,1,figsize=(12,10))
