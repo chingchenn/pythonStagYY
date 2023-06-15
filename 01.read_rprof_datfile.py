@@ -9,8 +9,9 @@ Created on Tue Feb 28 22:44:59 2023
 
 import os    
 datapath = '/Users/chingchen/Desktop/data/'
+datapath = '/lfs/jiching/data/'
 path = '/Users/chingchen/Desktop/model/'
-model = 'w0209'
+path = '/lfs/jiching/ScalingLaw_model/'
 for mm in range(0,1):
     
     model = 'w101'+str(mm)
