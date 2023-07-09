@@ -1,7 +1,11 @@
 import stagpy
 from stagpy import field
 from stagpy import stagyydata
-sdat = stagyydata.StagyyData('/lfs/jiching/thermo_chemical/TC_2D-SPH_Basalt_HR002/') # model path
+
+path ='/lfs/jiching/thermo_chemical/'
+path = '/Users/chingchen/Desktop/model/'
+model = 'TC_2D-SPH_Basalt_HR002'
+sdat = stagyydata.StagyyData(path+model) # model path
 sdat.__dir__() # 
 
 print(sdat.scales) # acceleration, density, dyn_visc,
