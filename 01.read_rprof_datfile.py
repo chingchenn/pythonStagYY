@@ -12,9 +12,9 @@ datapath = '/Users/chingchen/Desktop/data/'
 datapath = '/lfs/jiching/data/'
 path = '/Users/chingchen/Desktop/model/'
 path = '/lfs/jiching/ScalingLaw_model/'
-for mm in range(0,1):
+for mm in range(7,8):
     
-    model = 'w101'+str(mm)
+    model = 'w020'+str(mm)
     #model = 'w0209'
     file = datapath+model+'_rprof.dat'
     sourceFileName = file
