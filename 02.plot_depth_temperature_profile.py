@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Times New Roman"
 
-model = 'w0804'
+model = 'h02_192'
 path = '/Users/chingchen/Desktop/model/'
 figpath = '/Users/chingchen/Desktop/figure/StagYY/'
 mp4 = 0
@@ -31,26 +31,27 @@ header_list = ['r','Tmean','Tmin','Tmax','vrms','vmin','vmax',
                'advasc','tcondmean','tcondmin','tcondmax']
 
 for i in range(1,2):
-    fig,(ax,ax2,ax3) = plt.subplots(1,3,figsize=(18,15))
-    model = 'w0201'
+    fig,(ax) = plt.subplots(1,1,figsize=(18,15))
+    model = 'h02_192'
     ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
                       sep = '\\s+',header = None,names = header_list)    
-    ax.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
+    ax.scatter(ff.Tmean,ff.r,color = '#414F67',s=50)
+    
     
     model = 'w0204'
     ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
                       sep = '\\s+',header = None,names = header_list)    
-    ax2.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
+    # ax2.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
     
-    model = 'w0207'
-    ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
-                      sep = '\\s+',header = None,names = header_list)    
-    ax3.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
+    # model = 'w0207'
+    # ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
+    #                   sep = '\\s+',header = None,names = header_list)    
+    # ax3.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
     
-    for aa in [ax,ax2,ax3]:
+    for aa in [ax]:
         aa.tick_params( labelsize=labelsize)
         aa.grid()
-        aa.set_ylim(0,1)
+        aa.set_ylim(0,0.1)
         aa.set_xlim(0,1)
         aa.set_xlabel('Temperature',fontsize = labelsize)
         for axis in ['top','bottom','left','right']:
@@ -58,9 +59,9 @@ for i in range(1,2):
     # ax2.set_xlabel('Temperature',fontsize = labelsize)
     ax.set_ylabel('Depth',fontsize = labelsize)
     ax.set_title('Time = '+str(i),fontsize = labelsize)
-    ax.text(0.45,0.9,'Ea = 10^5',fontsize = labelsize+8)
-    ax2.text(0.45,0.9,'Ea = 10^6',fontsize = labelsize+8)
-    ax3.text(0.45,0.9,'Ea = 10^7',fontsize = labelsize+8)
+    # ax.text(0.45,0.9,'Ea = 10^5',fontsize = labelsize+8)
+    # ax2.text(0.45,0.9,'Ea = 10^6',fontsize = labelsize+8)
+    # ax3.text(0.45,0.9,'Ea = 10^7',fontsize = labelsize+8)
     # fig.savefig(figpath+'frame_'+str(i)+'temperature_profile.png')
     # fig.gca()
     # plt.close(fig)
