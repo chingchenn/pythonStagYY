@@ -15,6 +15,7 @@ model = 'TC_2D-SPH_2C_HR023'
 model = 'h13'
 path = '/Users/chingchen/Desktop/data/'
 path = '/lfs/jiching/ScalingLaw_model/23summer/'
+#path = '/lfs/jiching/thermo_chemical/'
 figpath = '/Users/chingchen/Desktop/figure/'
 figpath = '/lfs/jiching/figure/'
 
@@ -29,7 +30,7 @@ gif = 0
 mp4 = 0
 end = 600
 if plotting_3field:
-    for shot in range(1,end):
+    for shot in range(end-2,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         bs1,bs2,bs3,bs4 = field.get_meshes_fld(data.snaps[shot],'bs')
         prim1,prim2,prim3,prim4 = field.get_meshes_fld(data.snaps[shot],'prim')
@@ -107,7 +108,7 @@ if plotting_Tv:
         plt.close(fig)
 
 if plotting_T:
-    for shot in range(end-4,end):
+    for shot in range(end-2,end+1):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
