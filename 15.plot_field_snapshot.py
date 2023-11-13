@@ -11,9 +11,9 @@ import numpy as np
 from stagpy import field
 from stagpy import stagyydata
 import matplotlib.pyplot as plt
-model = 'h01'
+model = 'h01_re'
 path = '/Users/chingchen/Desktop/data/'
-path = '/lfs/jiching/thermo_chemical/'
+path = '/lfs/jiching/ScalingLaw_model/23summer/'
 figpath = '/Users/chingchen/Desktop/figure/'
 figpath = '/lfs/jiching/figure/'
 
@@ -24,9 +24,9 @@ plotting_Tv = 0
 plotting_T = 1
 plotting_bs = 0
 plotting_prim = 0
-gif = 1
-mp4 = 1
-shot = 1000
+gif = 0
+mp4 = 0
+shot = 100
 if plotting_3field:
    
     kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
