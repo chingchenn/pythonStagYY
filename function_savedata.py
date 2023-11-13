@@ -107,3 +107,18 @@ def save_6txt(title,path,array1,array2,array3,array4,array5,array6):
         f.write('%f '%array5[kk])
         f.write('%f\n'%array6[kk])
     f.close()
+def save_11txt(title,path,array1,array2,array3,array4,array5,array6,array7,array8,array9,array10,array11):
+    f = open(path +"/"+ title + ".txt",'w')
+    f.write('%f '%array1)
+    f.write('%f '%array2)
+    f.write('%f '%array3)
+    f.write('%f '%array4)
+    f.write('%f '%array5)
+    f.write('%f '%array6)
+    f.write('%f '%array7)
+    f.write('%f '%array8)
+    f.write('%f '%array9)
+    f.write('%f '%array10)
+    f.write('%f\n'%array11)
+    f.close()
+
