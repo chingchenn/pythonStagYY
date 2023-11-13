@@ -18,6 +18,7 @@ if local:
     path = '/Users/chingchen/Desktop/data/'
     workpath = '/Users/chingchen/Desktop/StagYY_Works/'
     modelpath = '/Users/chingchen/Desktop/model/'
+    figpath = '/Users/chingchen/Desktop/figure/'
 else:
     path = '/lfs/jiching/data/'
     workpath = '/lfs/jiching/ScalingLaw_model/'
@@ -50,7 +51,7 @@ model_information = pd.read_csv(workpath+'average_data.csv',sep=',')
 for jj in range(len(model_information)):
     model = model_information.model[jj]
     time_window2 = model_information.time_window2[jj]
-    ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(time_window2*100)+'.txt',
+    ff = pd.read_csv(modelpath+model+'/datafile/'+model+'_data_'+str(int(time_window2*100))+'.txt',
                           sep = '\\s+',header = None,names = header_list)   
     x = np.array(ff.vzabs*ff.Tmean)
     y = np.array(ff.r)
@@ -75,3 +76,6 @@ for jj in range(len(model_information)):
 #    ax.axhline(y=line_y[0], color=newcolors[kk], linestyle='--',lw = 2)
 #    ax2.axhline(y=line_y[0], color=newcolors[kk], linestyle='--',lw = 2)  
     print(model,line_y[0])
+    file = np.loadtxt(workpath+'test_Tm.txt')
+    rsurf,gamma,thetam,xx1,nu,xx2 = file.T
+    print(model,line_y[0]-thetam[jj])
