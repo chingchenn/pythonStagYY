@@ -11,8 +11,8 @@ import os, sys
 datapath = '/Users/chingchen/Desktop/data/'
 #datapath = '/lfs/jiching/data/'
 path = '/Users/chingchen/Desktop/model/'
-path = '/lfs/jiching/ScalingLaw_model/'
 #path = '/lfs/jiching/ScalingLaw_model/'
+
 model = sys.argv[1]
 p = sys.argv[2]
 p = int(p) + 1 
