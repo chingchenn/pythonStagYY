@@ -12,8 +12,9 @@ from stagpy import field
 from stagpy import stagyydata
 import matplotlib.pyplot as plt
 model = 'TC_2D-SPH_2C_HR023'
+model = 'h13'
 path = '/Users/chingchen/Desktop/data/'
-path = '/lfs/jiching/thermo_chemical/'
+#path = '/lfs/jiching/thermo_chemical/'
 figpath = '/Users/chingchen/Desktop/figure/'
 figpath = '/lfs/jiching/figure/'
 
@@ -21,14 +22,14 @@ figpath = '/lfs/jiching/figure/'
 data = stagyydata.StagyyData(path+model)
 plotting_3field = 0
 plotting_Tv = 0
-plotting_T = 0
+plotting_T = 1
 plotting_bs = 0
 plotting_prim = 0
 gif = 1
 mp4 = 1
-end = 1501
+end = 600
 if plotting_3field:
-    for shot in range(1,end):
+    for shot in range(end-2,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         eta1,eta2,eta3,eta4 = field.get_meshes_fld(data.snaps[shot],'eta')
         rho1,rho2,rho3,rho4 = field.get_meshes_fld(data.snaps[shot],'rho')
@@ -94,7 +95,7 @@ if plotting_Tv:
         plt.close(fig)
 
 if plotting_T:
-    for shot in range(1,517,5):
+    for shot in range(end-2,end+1):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
