@@ -58,14 +58,14 @@ scatter_size = 100
 
 ### DO WHAT ###
 
-split_dat = 1
-save_data = 1
-plot_average = 0
+split_dat = 0
+save_data = 0
+plot_average = 1
+running_average = 1
+plot_scaling_result = 0
 fig_compare_T = 0
 fig_compare_Fu = 0
 fig_compare_Nu = 0
-running_average = 1
-plot_scaling_result = 0
 
 
 if split_dat:
@@ -175,7 +175,7 @@ if running_average: # Using the moving window to choose the time window
                 line_x = np.linspace(0,2400)
                 line_y = a*line_x + b
                 new_thickness[ss] = line_y[0]
-        average_t = np.average(Tmm)   
+        average_t = Tmm[-5]
         lid = np.average(new_thickness)
     
         if save_data:
@@ -201,6 +201,7 @@ if running_average: # Using the moving window to choose the time window
         ccc=DataFrame(average_fl_bot_array,columns=['average_fl_bot'])
         ddd=DataFrame(average_fl_top_array,columns=['average_fl_top'])
         fff=DataFrame(average_t_array,columns=['Tm'])
+        model = np.array(DataFrame(model_information.model,columns=['model']))
         ra = np.array(model_information.Ra0)
         gamma = np.log(np.array(model_information.Ea))
         nu = average_Nu_bot_array
@@ -208,7 +209,8 @@ if running_average: # Using the moving window to choose the time window
         xx2 = np.ones(len(nu))*1e-3
         thetam = (average_t_array)
         rsurf = ra/np.exp(gamma/2)
-        fs.save_6txt('scalinglaw_inversion',path,rsurf,gamma,thetam,xx1,nu,xx2)
+        #fs.save_6txt('scalinglaw_inversion',path,rsurf,gamma,thetam,xx1,nu,xx2)
+        fs.save_3txt('test_Tm',workpath,model,rsurf,thetam)
 #        n6 = pd.concat([moodel,f,Ra,Ea,tt1,tt2,lid,aaa,bbb,ccc,ddd,fff],axis=1)
 #        n6.to_csv(path+'average_data'+'.csv',index=False)
 x=[]

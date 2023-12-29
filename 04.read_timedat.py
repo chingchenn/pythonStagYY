@@ -16,9 +16,9 @@ figpath = '/Users/chingchen/Desktop/figure/StagYY/'
 mp4 = 1
 labelsize = 30
 bwith = 3
-fig_Nu_t = 1
-fig_F_t  = 1
-fig_T    = 0
+fig_Nu_t = 0
+fig_F_t  = 0
+fig_T    = 1
 fig_mobility = 0
 
 newcolors = ['#2F4F4F','#4682B4','#CD5C5C','#708090',
@@ -34,7 +34,8 @@ header_list = ['istep','time','F_top','F_bot','Tmin',
                'r_innercore','Tsurf','Tcmb']
 
 path = '/Users/chingchen/Desktop/data/'
-model = 'w0204'
+model = 'h01'
+f = 0.7
 if model == 'w0213':
     xmin_Nu, xmax_Nu = 0.5,1.5
     ymin_Nu, ymax_Nu = 2,4
@@ -93,6 +94,11 @@ elif model =='w0228':
     ymin_Nu, ymax_Nu = 0,4
     ymin_F,ymax_F = 0,2
     f = 0.7
+
+xmin_Nu, xmax_Nu = 0,2.5
+ymin_Nu, ymax_Nu = 1,10
+ymin_F,ymax_F = 2,10
+
 file = path+model+'_time.dat'
 ff = pd.read_csv(file,sep = '\\s+')    
 # for kk, model in enumerate(model_list):
@@ -142,7 +148,7 @@ if fig_T :
         ax3.spines[axis].set_linewidth(bwith)
     ax3.grid()
     # ax.set_xlim(0.09,0.12)
-    # ax.set_ylim(7,8.2)
+    ax3.set_ylim(0.78,0.828)
     ax3.set_xlabel('time',fontsize = labelsize)
     ax3.set_ylabel('Temperature',fontsize = labelsize)
     ax3.legend(fontsize = 20)

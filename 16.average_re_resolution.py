@@ -22,10 +22,10 @@ bwith = 3
 path = '/Users/chingchen/Desktop/data/'
 workpath = '/Users/chingchen/Desktop/StagYY_Works/'
 modelpath = '/Users/chingchen/Desktop/model/'
-model = 'w0816_192'
+model = 'ca06'
 
-normal = 1
-internal = 0
+normal = 0
+internal = 1
 
 if normal:
     model_information = pd.read_csv(workpath+'model_information.csv',sep=',')
@@ -71,7 +71,7 @@ ant=np.zeros(len(kk))
 afb=np.zeros(len(kk))
 aft=np.zeros(len(kk))
 
-H = 1.0
+H = 10.0
 #f=0
 if fig_ftime:
     fig,(ax2) = plt.subplots(1,1,figsize=(12,8))

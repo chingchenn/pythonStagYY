@@ -7,12 +7,15 @@ Created on Wed Mar  1 00:10:52 2023
 """
 
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "Times New Roman"
 
-model = 'h02_192'
+
+workpath = '/Users/chingchen/Desktop/StagYY_Works/'
 path = '/Users/chingchen/Desktop/model/'
-figpath = '/Users/chingchen/Desktop/figure/StagYY/'
+figpath = '/Users/chingchen/Desktop/figure/StagYY/temperature_profile/'
+datapath = '/Users/chingchen/Desktop/data/'
 mp4 = 0
 labelsize = 30
 bwith = 3
@@ -29,40 +32,50 @@ header_list = ['r','Tmean','Tmin','Tmax','vrms','vmin','vmax',
                'metalmax','gsmean','gsmin','gsmax','viscdisslog',
                'viscdissmin','viscdissmax','advtot','advdesc',
                'advasc','tcondmean','tcondmin','tcondmax']
+end = 500
+#Ra1e4_Ea1e5_f0.75
+#Ra1e4_Ea1e6
+#Ra1e5_Ea1e6
+#Ra1e5_Ea1e7
+#Ra3.2e4_Ea1e5
+#Ra3.2e4_Ea1e6_f0.7
+#Ra3.2e4_Ea1e7_f0.8
+#Ra3.2e5_Ea1e5_f0.8
 
-for i in range(1,2):
-    fig,(ax) = plt.subplots(1,1,figsize=(18,15))
-    model = 'h02_192'
+
+model_information = pd.read_csv(workpath+'model_information_all.csv',sep=',') 
+for jj in range(len(model_information)):
+    fig,(ax,ax2) = plt.subplots(1,2,figsize=(18,15))
+    model = model_information.model[jj]
+    end = model_information.time[jj] - 3
+    i = end
+    rsurf,f,Ea,H,Tm,ftop,fbot,Ur,raeff,dlid,Tlid = np.loadtxt(datapath+model+'_scaling_grep_data.txt')
+#model = 'Ra3.2e4_Ea1e7_f0.8'
     ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
                       sep = '\\s+',header = None,names = header_list)    
     ax.scatter(ff.Tmean,ff.r,color = '#414F67',s=50)
-    
-    
-    model = 'w0204'
-    ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
-                      sep = '\\s+',header = None,names = header_list)    
-    # ax2.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
-    
-    # model = 'w0207'
-    # ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
-    #                   sep = '\\s+',header = None,names = header_list)    
-    # ax3.plot(ff.Tmean,ff.r,color = '#414F67',lw=5)
-    
-    for aa in [ax]:
+
+
+
+    ax2.scatter(ff.Tmean,ff.r,color = '#414F67',s=50)
+    ax2.axvline(x=Tm,color ='#97795D')
+    ax.set_xlim(0,1)
+    ax2.set_xlim(0.8,1)
+    for aa in [ax,ax2]:
         aa.tick_params( labelsize=labelsize)
         aa.grid()
-        aa.set_ylim(0,0.1)
-        aa.set_xlim(0,1)
+        aa.set_ylim(0,1)
+        
         aa.set_xlabel('Temperature',fontsize = labelsize)
         for axis in ['top','bottom','left','right']:
                 aa.spines[axis].set_linewidth(bwith)
-    # ax2.set_xlabel('Temperature',fontsize = labelsize)
+    #ax2.set_xlabel('Temperature',fontsize = labelsize)
     ax.set_ylabel('Depth',fontsize = labelsize)
-    ax.set_title('Time = '+str(i),fontsize = labelsize)
-    # ax.text(0.45,0.9,'Ea = 10^5',fontsize = labelsize+8)
-    # ax2.text(0.45,0.9,'Ea = 10^6',fontsize = labelsize+8)
-    # ax3.text(0.45,0.9,'Ea = 10^7',fontsize = labelsize+8)
-    # fig.savefig(figpath+'frame_'+str(i)+'temperature_profile.png')
+    ax.set_title('Rasurf = '+str(rsurf)+' Ea = '+str(format(Ea,'.1e')),fontsize = labelsize)
+    ax2.set_title('Tm = '+str(Tm)+'   f = '+str(f),fontsize = labelsize)
+    
+    # fig.savefig(figpath+model+'frame_'+str(i)+'temperature_profile.png')
+    print(figpath+model+'_frame_'+str(i)+'temperature_profile.png')
     # fig.gca()
     # plt.close(fig)
 if mp4 :

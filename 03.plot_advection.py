@@ -15,12 +15,12 @@ plt.rcParams["font.family"] = "Times New Roman"
 # model = 'w0201'
 path = '/Users/chingchen/Desktop/model/'
 datapath = '/Users/chingchen/Desktop/data/'
-figpath = '/Users/chingchen/Desktop/figure/StagYY/'
+figpath = '/Users/chingchen/Desktop/StagYY_Works/AGU2023/'
 mp4 = 0
 labelsize = 30
 bwith = 3
 fig_advection_model = 1
-fig_thermal_conductivity = 1
+fig_thermal_conductivity = 0
 fig_temperature_model = 0
 newcolors = ['#2F4F4F','#4682B4','#CD5C5C','#708090',
               '#AE6378','#282130','#7E9680','#24788F',
@@ -42,9 +42,9 @@ header_list = ['r','Tmean','Tmin','Tmax','vrms','vmin','vmax',
 
 
 
-model = 'h02'
+model = 'i10'
 
-end =700
+end =500
 if fig_advection_model:
     fig,(ax,ax2) = plt.subplots(1,2,figsize=(12,12))
     # for kk, model in enumerate(model_list):
@@ -59,11 +59,13 @@ if fig_advection_model:
                 aa.spines[axis].set_linewidth(bwith)
         aa.grid()
         aa.set_ylim(0,1)
-    ax2.set_xlim(0.85,1)
-    ax.set_xlabel('Temperature x Vz',fontsize = labelsize)
+    ax2.set_xlim(0.0,1)
+    ax.set_xlim(0,500)
+    
+    ax.set_xlabel('T Vz',fontsize = labelsize)
     ax2.set_xlabel('Temperature ',fontsize = labelsize)
     ax.set_ylabel('Depth',fontsize = labelsize)
-    ax.set_title('Snapshot = '+str(end),fontsize = labelsize)
+    # ax.set_title('Snapshot = '+str(end),fontsize = labelsize)
         
 
     lid_thickness = np.zeros(end)
@@ -97,7 +99,11 @@ if fig_advection_model:
     #ax.set_xlim(0,1000)
     ax.axhline(y=line_y[0], color='r', linestyle='--',lw = 2)
     ax2.axhline(y=line_y[0], color='r', linestyle='--',lw = 2)
-
+    ax.axhspan(line_y[0], 1, facecolor='#44b14e',alpha=0.25)
+    ax.axhspan(0,line_y[0], facecolor='#32aae2',alpha=0.25)
+    ax2.axhspan(line_y[0], 1, facecolor='#44b14e',alpha=0.25)
+    ax2.axhspan(0,line_y[0], facecolor='#32aae2',alpha=0.25)
+    fig.savefig(figpath+'temperature_profile.pdf')
 
 if fig_thermal_conductivity:
     fig,(ax,ax2) = plt.subplots(1,2,figsize=(12,12))

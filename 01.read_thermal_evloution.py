@@ -77,12 +77,13 @@ if shell_properties:
     
     fig,(axmm,ax2) = plt.subplots(2,1,figsize=(12,12))
     
-    axmm.scatter(data.etam, data.Tm)
+    axmm.scatter(data.zbot, data.Tm)
     #ax.scatter(data.zbot, data.Ftop/(0.7**2))
     # ax.scatter(data.time_Gyr, data.Power)
-    #ax2.scatter(data.zbot,data.P)
+    ax2.scatter(data.zbot,data.P)
     #ax2.scatter(data.zbot,data.T_core)
-    
+    axmm.set_ylabel('Tm',fontsize=30)
+    ax2.set_ylabel('P',fontsize = 36)
     for aa in [axmm,ax2]:
         aa.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
         ax2.set_xlabel('zbot',fontsize=labelsize)

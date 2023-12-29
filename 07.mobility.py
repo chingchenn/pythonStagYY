@@ -75,7 +75,7 @@ if fig_mobility:
             snaptime[uu-1] = uu/1000
         ax4.plot(snaptime,vsurf/time_vrms,color = newcolors[kk],lw=5,label=label_list[kk]) #time.dat
         # ax4.plot(snaptime,vsurf/vrms,color = newcolors[kk],lw=5,label=model) #rprof
-    ax4.set_ylim(0.0,0.01)
+    #ax4.set_ylim(0.0,0.01)
     ax4.tick_params(labelsize=labelsize)
     for axis in ['top','bottom','left','right']:
         ax4.spines[axis].set_linewidth(bwith)

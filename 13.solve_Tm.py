@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 normal   = 0
 internal = 1
 fig5,(ax,ax2) = plt.subplots(1,2,figsize=(18,9))
-
+fig6,(ax3) = plt.subplots(1,1,figsize=(12,9))
 def solve_temperature(a1,a2,c,d,icalc,itemax,nite,eps,f,cgeom,H,gamma,RT,Rk,Ra0,T_TDV,Tm,Ram,km):
     T_H = (a1-a2*f)*(cgeom*H)**c / Ram**d
     g =Tm-T_TDV -T_H
@@ -60,7 +60,7 @@ if normal:
     
 if internal:
     file = 'internal_for_Tm_jiching.dat'
-    Ra0_array, Deta_array, f_array, H_array,Tm_array, Ftop_array = np.loadtxt(path+file).T
+    Ra0_array, Deta_array, f_array, H_array,Tm_array, Ftop_array= np.loadtxt(path+file).T
     Rk = 1
 npt=1
     
@@ -69,9 +69,9 @@ a,b,e = 1.23,1.5,0.2
 #print('Uncertainties:')
 sigma_a,sigma_b,sigma_e=0.05,0.02,0.02
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey < 1:')
-a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=5.6483,4.5643,1.00,0.250
+a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=7.1459,6.6078,1.00,0.250
 #print('Uncertainties:')
-sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.6646,0.9098,0.0,0.0
+sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.3929,0.5261,0.001,0.001
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey > 1:')
 a1_Fneg,a2_Fneg,c_Fneg,d_Fneg=5.36,3.00,1.72,0.333
 #print('Uncertainties:')
@@ -244,22 +244,30 @@ for kk in range(len(Ra0_array)):
     
     ax.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5, label='Data with Error Bars',color = 'k')
     ax2.errorbar(Ftop_array[kk],Ftop,yerr=sigma_F, fmt='o', capsize=5, label='Data with Error Bars',color = 'k')
+    if (H>0):
+        ax3.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5, label='Data with Error Bars',color = 'orange',ecolor='#849DAB')
+    else:
+        ax3.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'k',ecolor='#849DAB')
 
 
-bwith=2
-labelsize=16
-for aa in [ax,ax2]:
+bwith=3
+labelsize=25
+for aa in [ax,ax2,ax3]:
     aa.tick_params(labelsize=labelsize)
     aa.set_aspect('equal')
     for axis in ['top','bottom','left','right']:
         aa.spines[axis].set_linewidth(bwith)
-    aa.grid()
+    # aa.grid()
 ax.set_xlim(0.8,1.07)
 ax.set_ylim(0.8,1.07)
 ax2.set_xlim(0,10)
 ax2.set_ylim(0,10)
-ax.set_xlabel('Tm_obseverd',fontsize = labelsize)
-ax.set_ylabel('Tm_pred',fontsize = labelsize)
+ax.set_xlabel('observed interior temperature',fontsize = labelsize)
+ax.set_ylabel('modelede interior temperature',fontsize = labelsize)
 ax2.set_xlabel('F_obseverd/f',fontsize = labelsize)
 ax2.set_ylabel('F_pred/f',fontsize = labelsize)
-
+ax3.set_xlim(0.8,1)
+ax3.set_ylim(0.8,1)
+ax3.set_xlabel('observed interior temperature',fontsize = labelsize)
+ax3.set_ylabel('modelede interior temperature',fontsize = labelsize)
+ax3.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
