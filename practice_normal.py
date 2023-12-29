@@ -22,11 +22,11 @@ bwith = 3
 path = '/Users/chingchen/Desktop/data/'
 workpath = '/Users/chingchen/Desktop/StagYY_Works/'
 modelpath = '/Users/chingchen/Desktop/model/'
-model = 'Ra3.2e5_Ea1e5_f0.8'
+model = 'tdv_2D-SPH_Ra1e4_Ea1e8_f0.8'
 
 
-tw2=0.17
-tw1=tw2-0.06
+tw2=0.25
+tw1=tw2-0.1
 
 
 #Ra1e4_Ea1e5_f0.75
@@ -37,6 +37,10 @@ tw1=tw2-0.06
 #Ra3.2e4_Ea1e6_f0.7
 #Ra3.2e4_Ea1e7_f0.8
 #Ra3.2e5_Ea1e5_f0.8
+#tdv_2D-SPH_Ra1e4_Ea1e7_f0.8
+#tdv_2D-SPH_Ra1e4_Ea1e8_f0.7
+#tdv_2D-SPH_Ra1e4_Ea1e8_f0.75
+#tdv_2D-SPH_Ra1e4_Ea1e8_f0.8
 
 
 model_information = pd.read_csv(workpath+'model_information_all.csv',sep=',')
@@ -44,7 +48,7 @@ model_information = pd.read_csv(workpath+'model_information_all.csv',sep=',')
 fig_ftime = 1
 choosen_time_window = 1
 plot_average = 1
-plot_Tprofile = 0
+plot_Tprofile =0
 save= 1
 rprof_header_list = ['r','Tmean','Tmin','Tmax','vrms','vmin','vmax',
                'vzabs','vzmin','vzmax','vhrms','vhmin','vhmax',
@@ -69,8 +73,6 @@ Ra0 = model_information.Ra0[jj]
 H = model_information.H[jj]
 
 ff = pd.read_csv(path+model+'_scaling_time_data.csv')
-t0 = time.time()
-print("----t0----: ", t0- start)
 kk = np.arange(0.03,2.5,0.005) # time shift = 0.005
 tt1=np.zeros(len(kk))
 tt2=np.zeros(len(kk))
@@ -178,8 +180,8 @@ print(model,round(rsurf,3),round(gamma,3),f,round(Tmm,3),round(ftop,3),
 print(model,Ra0/1e5,f,Ea/1e5,)
 print(round(ftop,3),round(f**2 * fbot,3),round(f**2 * fbot -ftop,3))
 
-ax.set_ylim(ftop-0.2,ftop+0.2)
-#ax.set_ylim(1,3.5)
+ax.set_ylim(ftop-1,ftop+1)
+#ax.set_ylim(1,5)
 #ax2.set_ylim(ftop-0.2,ftop+0.2)
 if plot_Tprofile:
     fig3,(ax6) = plt.subplots(1,1,figsize=(6,10))
