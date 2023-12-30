@@ -9,9 +9,10 @@ Created on Tue Feb 28 22:44:59 2023
 
 import os, sys 
 datapath = '/Users/chingchen/Desktop/data/'
-#datapath = '/lfs/jiching/data/'
+datapath = '/lfs/jiching/data/'
+datapath = '/lfs/jiching/ScalingLaw_model/data_scaling/'
 path = '/Users/chingchen/Desktop/model/'
-#path = '/lfs/jiching/ScalingLaw_model/'
+path = '/lfs/jiching/ScalingLaw_model/23agu/'
 
 model = sys.argv[1]
 p = sys.argv[2]
@@ -48,3 +49,4 @@ for i in range(m):
             destFileData.write(line+'\n')
     destFileData.close()
 print(model+'==DONE==',m-1)
+print(path+model+'/datafile/')
