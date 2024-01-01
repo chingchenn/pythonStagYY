@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 normal   = 0
 internal = 1
 fig5,(ax,ax2) = plt.subplots(1,2,figsize=(18,9))
-fig6,(ax3) = plt.subplots(1,1,figsize=(12,9))
+#fig6,(ax3) = plt.subplots(1,1,figsize=(12,9))
 def solve_temperature(a1,a2,c,d,icalc,itemax,nite,eps,f,cgeom,H,gamma,RT,Rk,Ra0,T_TDV,Tm,Ram,km):
     T_H = (a1-a2*f)*(cgeom*H)**c / Ram**d
     g =Tm-T_TDV -T_H
@@ -60,18 +60,20 @@ if normal:
     
 if internal:
     file = 'internal_for_Tm_jiching.dat'
+    #file = 'i17.dat'
     Ra0_array, Deta_array, f_array, H_array,Tm_array, Ftop_array, Fbot_array= np.loadtxt(path+file).T
     Rk = 1
 npt=1
-    
+sigma_c = 0.01
+sigma_d = 0.01
 #print('Parameters a, b and e of T_TDV scaling, a*Rk^e/gamma/f^b :')
 a,b,e = 1.23,1.5,0.2
 #print('Uncertainties:')
 sigma_a,sigma_b,sigma_e=0.05,0.02,0.02
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey < 1:')
-a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=6.0359,5.12078,1.00,0.250
+a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=6.0332,5.1235,1.00,0.250
 #print('Uncertainties:')
-sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.3929,0.5261,0.001,0.001
+sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.5141,0.6952,0.001,0.001
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey > 1:')
 a1_Fneg,a2_Fneg,c_Fneg,d_Fneg=5.36,3.00,1.72,0.333
 #print('Uncertainties:')
@@ -89,8 +91,8 @@ eps,itemax=1.0e-5,100
 
 
 icalc = 1
-sigma_c=0.1
-sigma_d=0.1
+# sigma_c=0.1
+# sigma_d=0.1
 for kk in range(len(Ra0_array)):
     Ra0 = Ra0_array[kk]
     f = f_array[kk]
@@ -139,7 +141,7 @@ for kk in range(len(Ra0_array)):
     ephi = ephi_Fpos
     Ftop = aphi*(Ram**bphi)*(f**dphi)/gamma**cphi/Rk**ephi
     Fbot = (Ftop - cgeom*H) / f**2.0
-    
+    #print('---1---',Ftop, aphi,Ram,bphi,f,dphi,gamma,cphi,Rk,ephi)
     sigma_aphi = sigma_aphi_Fpos
     sigma_bphi = sigma_bphi_Fpos
     sigma_cphi = sigma_cphi_Fpos
@@ -162,7 +164,7 @@ for kk in range(len(Ra0_array)):
        ephi = ephi_Fneg
        Ftop = aphi*(Ram**bphi)*(f**dphi)/gamma**cphi/Rk**ephi
        Fbot = (Ftop - cgeom*H) / f**2
-
+       #print('---2---',Ftop)
        sigma_aphi = sigma_aphi_Fneg
        sigma_bphi = sigma_bphi_Fneg
        sigma_cphi = sigma_cphi_Fneg
@@ -178,7 +180,7 @@ for kk in range(len(Ra0_array)):
 
            Fbot = 0.0
            Ftop = (1.0 + f + f**2)*H/3.0
-
+           #print('---3---',Ftop)
            aphi = 0.5*(aphi_Fneg + aphi_Fpos)
            bphi = 0.5*(bphi_Fneg + bphi_Fpos)
            cphi = 0.5*(cphi_Fneg + cphi_Fpos)
@@ -244,17 +246,17 @@ for kk in range(len(Ra0_array)):
     print('Urey = ',round(Urey,5))
     print('                              ')
     
-    ax.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5, label='Data with Error Bars',color = 'k')
-    ax2.errorbar(Ftop_array[kk],Ftop,yerr=sigma_F, fmt='o', capsize=5, label='Data with Error Bars',color = 'k')
     if (H>0):
-        ax3.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'orange',ecolor='#849DAB',label='mix heat' if kk==12 else '')
+        #ax3.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'orange',ecolor='#849DAB',label='mix heat' if kk==12 else '')
+        ax.errorbar( Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'orange',ecolor='#849DAB',label='mix heat' if kk==12 else '')
+        ax2.errorbar(Ftop_array[kk],Ftop,yerr=sigma_F, fmt='o', capsize=5,color = 'orange',ecolor='#849DAB',label='mix heat' if kk==12 else '')
     else:
-        ax3.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'k',ecolor='#849DAB',label='basal heat' if kk==0 else '')
-
+        ax.errorbar(Tm_array[kk], Tm, yerr=sigma_Tm, fmt='o', capsize=5,color = 'k',ecolor='#849DAB',label='basal heat' if kk==0 else '')
+        ax2.errorbar(Ftop_array[kk],Ftop,yerr=sigma_F, fmt='o', capsize=5,color = 'k',ecolor='#849DAB',label='basal heat' if kk==0 else '')
 
 bwith=3
 labelsize=25
-for aa in [ax,ax2,ax3]:
+for aa in [ax,ax2]:
     aa.tick_params(labelsize=labelsize)
     aa.set_aspect('equal')
     for axis in ['top','bottom','left','right']:
@@ -266,11 +268,12 @@ ax2.set_xlim(0,10)
 ax2.set_ylim(0,10)
 ax.set_xlabel('observed interior temperature',fontsize = labelsize)
 ax.set_ylabel('modeled interior temperature',fontsize = labelsize)
-ax2.set_xlabel('F_obseverd/f',fontsize = labelsize)
-ax2.set_ylabel('F_pred/f',fontsize = labelsize)
-ax3.set_xlim(0.8,1)
-ax3.set_ylim(0.8,1)
-ax3.set_xlabel('observed interior temperature',fontsize = labelsize)
-ax3.set_ylabel('modeled interior temperature',fontsize = labelsize)
-ax3.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
-ax3.legend(fontsize = labelsize)
+ax2.set_xlabel('F_obseverd',fontsize = labelsize)
+ax2.set_ylabel('F_pred',fontsize = labelsize)
+# ax3.set_xlim(0.8,1.07)
+# ax3.set_ylim(0.8,1.07)
+# ax3.set_xlabel('observed interior temperature',fontsize = labelsize)
+# ax3.set_ylabel('modeled interior temperature',fontsize = labelsize)
+ax.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
+ax2.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
+ax2.legend(fontsize = labelsize)
