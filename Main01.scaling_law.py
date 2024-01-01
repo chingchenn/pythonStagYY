@@ -12,6 +12,7 @@ import time
 from pandas.core.frame import DataFrame
 import matplotlib.pyplot as plt
 import function_savedata as fs
+import glob
 
 
 labelsize = 20
@@ -19,8 +20,8 @@ bwith = 3
 local = 1
 
 if local:
-    figpath = '/Users/chingchen/Desktop/figure/StagYY/'
-    path = '/Users/chingchen/Desktop/data/'
+    figpath = '/Users/chingchen/Desktop/StagYY_Works/figure/'
+    path = '/Users/chingchen/Desktop/StagYY_Works/data_scaling/'
     workpath = '/Users/chingchen/Desktop/StagYY_Works/'
     modelpath = '/Users/chingchen/Desktop/model/'
 else:
@@ -28,18 +29,26 @@ else:
     path = '/lfs/jiching/ScalingLaw_model/data_scaling/'
     workpath = '/lfs/jiching/ScalingLaw_model/'
     modelpath = '/lfs/jiching/ScalingLaw_model/23agu/'
-model = sys.argv[1]
+#model = sys.argv[1]
+model = 'i13_192'
 
-tw1 = 0.2
-tw2 = 0.24
-xmin,xmax=2.6,9.3
+a = glob.glob(path+model+'/datafile/*txt')
+
+
+tw1 = (len(a)-300)/1000
+tw2 = (len(a)-10)/1000
+# tw1 = 0.3
+# tw2 = 0.5
+print(len(a))
+xmin,xmax=1,4
 model_information = pd.read_csv(workpath+'model_information_23end.csv',sep=',')  
 
 fig_ftime = 1
 choosen_time_window = 1
 plot_average = 1
-plot_Tprofile = 0
+plot_Tprofile = 1
 save = 1
+save_fig=1
 
 
 rprof_header_list = ['r','Tmean','Tmin','Tmax','vrms','vmin','vmax',
@@ -93,7 +102,7 @@ if choosen_time_window:
         tt1[ii] = np.round(time_window1,2)
         tt2[ii] = np.round(time_window1,2)
         aft[ii] = average_fl_top
-    
+
     tt1 = tt1[aft>0]
     tt2 = tt2[aft>0]
     aft = aft[aft>0]
@@ -102,12 +111,12 @@ if choosen_time_window:
     
     time_window1=np.max(tt1[(aft>np.mean(aft)+0.1*np.std(ff.Nu_bot))])+0.001 # minimum time + 0.3
     time_window2=np.max(tt2[(aft<np.mean(aft)+0.1*np.std(ff.Nu_top))])-0.001 # maximum time - 0.05
-    #time_window1 = tw1
-    #time_window2 = tw2
+    time_window1 = tw1
+    time_window2 = tw2
     
     if plot_average:
         ax2.scatter(tt1,aft,color='#35838D')
-        ax2.set_ylabel('F$_{bot}$',fontsize = 20)
+        ax2.set_ylabel('F$_{top}$ avg',fontsize = 20)
         ax.legend(fontsize =labelsize)
         for aa in [ax,ax2]:
             aa.set_xlim(0,time_window2+0.05)
@@ -129,7 +138,7 @@ new_thickness = np.zeros(end)
 avg_temp = np.zeros(end)
 
 for i in range(200,end+1):
-    rof = pd.read_csv(workpath+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
+    rof = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(i)+'.txt',
                       sep = '\\s+',header = None,names = rprof_header_list)    
     x = np.array(rof.vzabs*rof.Tmean)
     y = np.array(rof.r)
@@ -146,24 +155,22 @@ for i in range(200,end+1):
         new_thickness[i-1] = line_y[0]
         avg_temp[i-1] = np.average(rof.Tmean[y<y[x==inf_point]])
 
-rprof_ff = pd.read_csv(modelpath+model+'/datafile/'+model+'_data_'+str(end)+'.txt',
+rprof_ff = pd.read_csv(path+model+'/datafile/'+model+'_data_'+str(end)+'.txt',
               sep = '\\s+',header = None,names = rprof_header_list) 
 Tmm = np.average(rprof_ff.Tmean[(rprof_ff.r>0.3)*(rprof_ff.r<0.5)])
-average_t = Tmm
 dlid = 1-np.average(new_thickness[20:])
 ftop = average_fl_top
 fbot = average_fl_bot
 gamma = np.log(np.array(Ea))
 rsurf = Ra0/np.exp(gamma/2)
-raeff = rsurf*np.exp(gamma*average_t)
+raeff = rsurf*np.exp(gamma*Tmm)
 flid = 1-(1-f)*dlid
 Tlid = dlid/flid*(ftop-1/6*H*(2-flid-flid**2)/(1-f))
 Ur = (1+f+f**2)/3*H/ftop
-#print(model,rsurf,gamma,average_t,1e-5,average_Nu_bot,1e-3)
 print('##############################################################')
 print(model,round(rsurf,5),f,format(Ea,'.1e'),H,round(Tmm,3),round(ftop,3),
       round(fbot,3),round(Ur,3),format(raeff,'.3e'),round(dlid,3),round(Tlid,3))
-print(round(ftop,3),round(f**2 * fbot + (1+f+f**2)/3 *H,3),round(f**2 * fbot + (1+f+f**2)/3 *H-ftop,3))
+print(round(ftop,3),round(f**2 * fbot + (1+f+f**2)/3 *H,3),round(f**2 * fbot + (1+f+f**2)/3 *H-ftop,5))
 
 
 ax.set_ylim(ftop-0.2,ftop+0.2)
@@ -173,16 +180,23 @@ if plot_Tprofile:
     ax6.plot(rprof_ff.Tmean,rprof_ff.r,color ='#414F67',lw=3)
     ax6.axvline(x=Tmm,color ='#97795D')
     for aa in [ax6]:
-        aa.set_xlim(0.85,1.05)
+        aa.set_xlim(0.55,1.05)
         aa.tick_params(labelsize=labelsize)
         aa.set_ylim(0,1)
         for axis in ['top','bottom','left','right']:
             aa.spines[axis].set_linewidth(bwith)
+    ax6.set_title(model,fontsize=labelsize)
+    ax6.set_ylabel('depth',fontsize = labelsize)
+    ax6.set_ylabel('Temp',fontsize = labelsize)
+if save_fig:
+    fig.savefig(figpath+model+'_time_vs_ftop.png')
+    fig3.savefig(figpath+model+'_Tprofile.png')
 
 if save:
     savearray = np.array([round(rsurf,5),f,round(Ea,0),H,round(Tmm,3),round(ftop,3),
-          round(fbot,3),round(Ur,3),round(raeff,3),round(dlid,3),round(Tlid,3)])
+          round(fbot,3),round(Ur,3),round(raeff,3),round(dlid,3),round(Tlid,3),tw1,tw2])
     fs.save_1txt(model+'_scaling_grep_data',path,savearray)
+    print(path+model+'_scaling_grep_data.txt')
 
 
 
