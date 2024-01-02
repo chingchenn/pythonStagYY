@@ -71,9 +71,9 @@ a,b,e = 1.23,1.5,0.2
 #print('Uncertainties:')
 sigma_a,sigma_b,sigma_e=0.05,0.02,0.02
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey < 1:')
-a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=6.0332,5.1235,1.00,0.250
+a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=4.5458,3.0849,1.00,0.250
 #print('Uncertainties:')
-sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.5141,0.6952,0.001,0.001
+sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.8195,1.118,0.001,0.001
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey > 1:')
 a1_Fneg,a2_Fneg,c_Fneg,d_Fneg=5.36,3.00,1.72,0.333
 #print('Uncertainties:')
