@@ -8,11 +8,11 @@ Created on Tue Feb 28 22:44:59 2023
 
 
 import os, sys 
-datapath = '/Users/chingchen/Desktop/data/'
-datapath = '/lfs/jiching/data/'
-datapath = '/lfs/jiching/ScalingLaw_model/data_scaling/'
-path = '/Users/chingchen/Desktop/model/'
-path = '/lfs/jiching/ScalingLaw_model/23agu/'
+datapath = '/Users/chingchen/Desktop/StagYY_Works/data_scaling/'
+#datapath = '/lfs/jiching/data/'
+#datapath = '/lfs/jiching/ScalingLaw_model/data_scaling/'
+path = '/Users/chingchen/Desktop/StagYY_Works/data_scaling/'
+#path = '/lfs/jiching/ScalingLaw_model/23agu/'
 
 model = sys.argv[1]
 p = sys.argv[2]
