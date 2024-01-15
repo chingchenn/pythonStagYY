@@ -67,13 +67,13 @@ npt=1
 sigma_c = 0.01
 sigma_d = 0.01
 #print('Parameters a, b and e of T_TDV scaling, a*Rk^e/gamma/f^b :')
-a,b,e = 1.23,1.5,0.2
+a,b,e = 1.23,0.7,0.2
 #print('Uncertainties:')
 sigma_a,sigma_b,sigma_e=0.05,0.02,0.02
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey < 1:')
-a1_Fpos,a2_Fpos,c_Fpos,d_Fpos=4.5458,3.0849,1.00,0.250
+a1_Fpos,a2_Fpos,c_Fpos,d_Fpos= 1.84,0.46,1.00,0.250
 #print('Uncertainties:')
-sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.8195,1.118,0.001,0.001
+sigma_a1_Fpos,sigma_a2_Fpos,sigma_c_Fpos,sigma_d_Fpos=0.5,0.6,0.001,0.001
 #print('Parameters a1, a2, c and d of T_H scaling (a1-a2*f)*(cgeom*H)^c/Ram^d for Urey > 1:')
 a1_Fneg,a2_Fneg,c_Fneg,d_Fneg=5.36,3.00,1.72,0.333
 #print('Uncertainties:')
@@ -266,6 +266,10 @@ ax.set_xlim(0.8,1.07)
 ax.set_ylim(0.8,1.07)
 ax2.set_xlim(0,10)
 ax2.set_ylim(0,10)
+xx = np.linspace(0,10)
+yy = np.linspace(0,10)
+ax.plot(xx,yy,c='green',linestyle = 'dashed',alpha = 0.5,lw=3)
+ax2.plot(xx,yy,c='green',linestyle = 'dashed',alpha = 0.5,lw=3)
 ax.set_xlabel('observed interior temperature',fontsize = labelsize)
 ax.set_ylabel('modeled interior temperature',fontsize = labelsize)
 ax2.set_xlabel('F_obseverd',fontsize = labelsize)
