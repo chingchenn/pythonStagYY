@@ -24,12 +24,12 @@ figpath = '/lfs/jiching/figure/'
 data = stagyydata.StagyyData(path+model)
 plotting_3field = 0
 plotting_Tv = 0
-plotting_T = 1
+plotting_T = 0
 plotting_bs = 0
-plotting_prim = 0
+plotting_prim = 1
 gif = 1
 mp4 = 1
-end = 290
+end = 300
 if plotting_3field:
     for shot in range(end-2,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
@@ -109,7 +109,7 @@ if plotting_Tv:
         plt.close(fig)
 
 if plotting_T:
-    for shot in range(end-2,end+1):
+    for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
@@ -132,13 +132,13 @@ if plotting_T:
         cbar = plt.colorbar(colorbar, cax=cax)
         cbar.set_label(label = 'Temperature',size=12)
 
-        fig.savefig(figpath+model+'_'+'Temperature_snapshot_'+str(shot)+'_field.png')
-        print('save figure'+model+'_'+'Temperature_snapshot_'+str(shot)+'_field.png')
+        fig.savefig(figpath+model+'_'+'temperature_snapshot_'+str(shot)+'_field.png')
+        print('save figure '+model+'_'+'temperature_snapshot_'+str(shot)+'_field.png')
         fig.gca()
         plt.close(fig)
 
 if plotting_bs:
-    for shot in range(1,end,2):
+    for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'bs')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
@@ -161,13 +161,13 @@ if plotting_bs:
         cbar = plt.colorbar(colorbar, cax=cax)
         cbar.set_label(label = 'Basalt',size=12)
 
-        fig.savefig(figpath+model+'_'+'Basalt_snapshot_'+str(shot)+'_field.png')
-        print('save figure'+model+'_'+'Basalt_snapshot_'+str(shot)+'_field.png')
+        fig.savefig(figpath+model+'_'+'basalt_snapshot_'+str(shot)+'_field.png')
+        print('save figure '+model+'_'+'basalt_snapshot_'+str(shot)+'_field.png')
         fig.gca()
         plt.close(fig)
 
 if plotting_prim:
-    for shot in range(1,end,2):
+    for shot in range(1,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'prim')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
@@ -190,8 +190,8 @@ if plotting_prim:
         cbar = plt.colorbar(colorbar, cax=cax)
         cbar.set_label(label = 'Primordial Material',size=12)
 
-        fig.savefig(figpath+model+'_'+'Primordial_snapshot_'+str(shot)+'_field.png')
-        print('save figure'+model+'_'+'Primordial_snapshot_'+str(shot)+'_field.png')
+        fig.savefig(figpath+model+'_'+'primordial_snapshot_'+str(shot)+'_field.png')
+        print('save figure '+model+'_'+'primordial_snapshot_'+str(shot)+'_field.png')
         fig.gca()
         plt.close(fig)
 #-----------------------------creat GIF-----------------------------------------
@@ -200,25 +200,25 @@ if gif:
      
     frames = []
     for shot in  range(1,end):
-        img=figpath+model+'_'+'Temperature_snapshot_'+str(shot)+'_field.png'
+        img=figpath+model+'_'+'temperature_snapshot_'+str(shot)+'_field.png'
         new_frame = Image.open(img)
         frames.append(new_frame)
-    frames[0].save(figpath+'png_to_gif.gif', format='GIF', append_images=frames[1:], 
+    frames[0].save(figpath+'temperature_png2gif.gif', format='GIF', append_images=frames[1:], 
                    save_all=True, duration=40, loop=0)
-    # frames = []
-    # for shot in  range(1,end,2):
-    #     img=figpath+model+'_'+'Basalt_snapshot_'+str(shot)+'_field.png'
-    #     new_frame = Image.open(img)
-    #     frames.append(new_frame)
-    # frames[0].save(figpath+'png_to_gif2.gif', format='GIF', append_images=frames[1:], 
-    #               save_all=True, duration=40, loop=0)
-    # frames = []
-    # for shot in  range(1,end,2):
-    #     img=figpath+model+'_'+'Primordial_snapshot_'+str(shot)+'_field.png'
-    #     new_frame = Image.open(img)
-    #     frames.append(new_frame)
-    # frames[0].save(figpath+'png_to_gif3.gif', format='GIF', append_images=frames[1:], 
-    #                save_all=True, duration=40, loop=0)
+#    frames = []
+#    for shot in  range(1,end):
+#        img=figpath+model+'_'+'basalt_snapshot_'+str(shot)+'_field.png'
+#        new_frame = Image.open(img)
+#        frames.append(new_frame)
+#    frames[0].save(figpath+'basalt_png2gif.gif', format='GIF', append_images=frames[1:], 
+#                  save_all=True, duration=40, loop=0)
+    frames = []
+    for shot in  range(1,end):
+        img=figpath+model+'_'+'primordial_snapshot_'+str(shot)+'_field.png'
+        new_frame = Image.open(img)
+        frames.append(new_frame)
+    frames[0].save(figpath+'primordial_png2gif.gif', format='GIF', append_images=frames[1:], 
+                   save_all=True, duration=40, loop=0)
 
 #    for shot in  range(1,2001,5):
 #        img=figpath+model+'_'+'snapshot_'+str(shot)+'_3field.png'
@@ -231,11 +231,11 @@ if gif:
 #-----------------------------creat mp4-----------------------------------------    
 if mp4:
     import moviepy.editor as mp
-    clip = mp.VideoFileClip(figpath+'png_to_gif.gif')
-    clip.write_videofile(figpath+'Temperature_fieldStagYY'+model+".mp4")
-#    clip = mp.VideoFileClip(figpath+'png_to_gif2.gif')
-#    clip.write_videofile(figpath+'Basalt_fieldStagYY'+model+".mp4")
-#    clip = mp.VideoFileClip(figpath+'png_to_gif3.gif')
-#    clip.write_videofile(figpath+'Primordial_fieldStagYY'+model+".mp4")
-#    clip = mp.VideoFileClip(figpath+'png_to_gif4.gif')
-#    clip.write_videofile(figpath+'3fieldStagYY'+model+".mp4")
+    clip = mp.VideoFileClip(figpath+'temperature_png2gif.gif')
+    clip.write_videofile(figpath+'temperature_field_'+model+".mp4")
+#    clip = mp.VideoFileClip(figpath+'basalt_png2gif.gif')
+#    clip.write_videofile(figpath+'basalt_field_'+model+".mp4")
+    clip = mp.VideoFileClip(figpath+'primordial_png2gif.gif')
+    clip.write_videofile(figpath+'primordial_field_'+model+".mp4")
+#     clip = mp.VideoFileClip(figpath+'png_to_gif4.gif')
+#     clip.write_videofile(figpath+'3fieldStagYY'+model+".mp4")
