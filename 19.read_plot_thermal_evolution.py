@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 labelsize = 30
 bwith = 3
 variation_eta = 0
-variation_P = 0
+variation_P = 1
 variation_P_fixvol = 0
 pmelt_plot = 0
 #----------------------------------------------------------------------------------------
@@ -27,14 +27,15 @@ pmelt = 0
 variation_thermal_evolution = 0
 Hvar_tprofile = 0
 Hvar_shell_propertise = 0
-Hvar_thermal_evolution = 0
-plot_final=1
+Hvar_thermal_evolution = 1
+plot_final=0
 
 ### PATH ###
 local = 1
 if local:
     path = '/Users/chingchen/Desktop/data/'
     workpath = '/Users/chingchen/Desktop/StagYY_Works/thermal_evolution/old_scaling_thermal_evolution/'
+    workpath = '/Users/chingchen/Desktop/StagYY_Works/thermal_evolution_v2/'
     modelpath = '/Users/chingchen/Desktop/model/'
     figpath = '/Users/chingchen/Desktop/figure/'
 else:
@@ -54,20 +55,20 @@ if variation_eta:
     header_list = ['Pint','etaref','pCLA','conv','P','zbot','vol',
                    'Tbot','Tm','TH2O','Fbot','Ftop','dlid','T_core']
     fig,(ax,ax2,ax3) = plt.subplots(3,1,figsize=(12,20))
-    model_list = ['Europa-tidal1_eta1d12-1d15_P0.1TW_1.5wt%-NH3',
-                  'Europa-tidal1_eta1d12-1d15_P0.3TW_1.5wt%-NH3',
-                  'Europa-tidal1_eta1d12-1d15_P0.5TW_1.5wt%-NH3',
-                  'Europa-tidal1_eta1d12-1d15_P0.6TW_1.5wt%-NH3',
-                  'Europa-tidal1_eta1d12-1d15_P0.8TW_1.5wt%-NH3',
-                  'Europa-tidal1_eta1d12-1d15_P1.0TW_1.5wt%-NH3',]
+    model_list = ['Europa-tidal1_eta1.0d12-1.0d15_P0.1TW_1.0wt%-NH3',
+                  'Europa-tidal1_eta1.0d12-1.0d15_P0.3TW_1.0wt%-NH3',
+                  'Europa-tidal1_eta1.0d12-1.0d15_P0.5TW_1.0wt%-NH3',
+                  'Europa-tidal1_eta1.0d12-1.0d15_P0.6TW_1.0wt%-NH3',
+                  'Europa-tidal1_eta1.0d12-1.0d15_P0.8TW_1.0wt%-NH3',
+                  'Europa-tidal1_eta1.0d12-1.0d15_P1.0TW_1.0wt%-NH3',]
                   # 'Europa-tidal1_eta1d12-1d15_P1.2TW_2.5wt%-NH3',
                   # 'Europa-tidal1_eta1d12-1d15_P1.4TW_2.5wt%-NH3']
-    model_list = ['Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.1TW_1.0wt%-NH3',
-                  'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.3TW_1.0wt%-NH3',
-                  'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.5TW_1.0wt%-NH3',
-                  'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.6TW_1.0wt%-NH3',
-                  'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.8TW_1.0wt%-NH3',
-                  'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P1.0TW_1.0wt%-NH3',]
+    # model_list = ['Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.1TW_1.0wt%-NH3',
+    #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.3TW_1.0wt%-NH3',
+    #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.5TW_1.0wt%-NH3',
+    #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.6TW_1.0wt%-NH3',
+    #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.8TW_1.0wt%-NH3',
+    #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P1.0TW_1.0wt%-NH3',]
     # model_list = ['Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.6TW_0.0wt%-NH3',
     #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.6TW_0.5wt%-NH3',
     #               'Europa-tidal5_period0.15Gyr_eta1d12-1d15_P0.6TW_1.0wt%-NH3',
@@ -127,20 +128,20 @@ if variation_P:
                   'Tbot','Tm','TH2O','Fbot','Ftop','dlid','T_core']
     
     fig,(ax,ax2,ax3) = plt.subplots(3,1,figsize=(12,20))
-    model_list = ['Europa-tidal1_eta1.0d12_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d12_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d13_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d13_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d14_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d14_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d15_P0.0-1.5TW_3.0wt%-NH3',]
-    model_list = ['Europa-tidal1_eta1.0d12_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d12_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d13_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d13_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d14_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta3.2d14_P0.0-1.5TW_3.0wt%-NH3',
-                 'Europa-tidal1_eta1.0d15_P0.0-1.5TW_3.0wt%-NH3',]
+    model_list = ['Europa-tidal1_eta1.0d12_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta3.2d12_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta1.0d13_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta3.2d13_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta1.0d14_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta3.2d14_P0.0-3.0TW_2.5wt%-NH3',
+                 'Europa-tidal1_eta1.0d15_P0.0-3.0TW_2.5wt%-NH3',]
+    # model_list = ['Europa-tidal1_eta1.0d12_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta3.2d12_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta1.0d13_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta3.2d13_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta1.0d14_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta3.2d14_P0.0-1.5TW_3.0wt%-NH3',
+    #              'Europa-tidal1_eta1.0d15_P0.0-1.5TW_3.0wt%-NH3',]
     # model_list = ['Europa-tidal5_period0.15Gyr_eta3.2d13_P0-1.5TW_0.5wt%-NH3',
     #              'Europa-tidal5_period0.15Gyr_eta3.2d13_P0-1.5TW_1.0wt%-NH3',
     #              'Europa-tidal5_period0.15Gyr_eta3.2d13_P0-1.5TW_1.5wt%-NH3',
@@ -425,7 +426,7 @@ if pmelt:
         for axis in ['top','bottom','left','right']:
             aa.spines[axis].set_linewidth(bwith)
 
-if variation_thermal_evolution:    
+if variation_thermal_evolution: # 同 variation_P or variation_vis
     header_list = ['Pint','etaref','pCLA','conv','P','zbot','%vol',
                    'Tbot','Tm','TH2O','Fbot','Ftop','dlid','T_core']
     fig,(ax,ax2,ax3) = plt.subplots(3,1,figsize=(12,20))
@@ -585,6 +586,9 @@ if Hvar_thermal_evolution:
                   'Europa-tidal5_period0.14Gyr_emx1.5_eta1.0d14_P0.8TW_1.5wt%-NH3',
                   'Europa-tidal5_period0.14Gyr_emx1.5_eta1.0d14_P1.0TW_1.5wt%-NH3',]
     
+    model_list = ['Europa-tidal1_eta3.2d12_P0.3TW_2.5wt%-NH3',
+                  'Europa-tidal1_eta3.2d12_P0.6TW_2.5wt%-NH3']
+    
     label_list=['eta = 1e12','eta = 3.2e12','eta = 1e13','eta = 3.2e13','eta = 1e14','eta = 3.2e14']
     # label_list=['eta = 1e13','eta = 3.2e13','eta = 1e14','eta = 3.2e14']
     label_list=['P = 0.1 Tw','P = 0.3 Tw','P = 0.5 Tw','P = 0.6 Tw','P = 0.8 Tw','P = 1.0 Tw']
@@ -635,6 +639,9 @@ if Hvar_thermal_evolution:
             aa.grid()
             for axis in ['top','bottom','left','right']:
                 aa.spines[axis].set_linewidth(bwith)
+
+
+
 if plot_final:
     header_list = ['time_Gyr','Prad','Ptidal','Fcore','Pint','Hint','conv',
                    'melt','P','zbot','%vol','Tbot','Tm','Fbot','Ftop','dlid','T_core']
