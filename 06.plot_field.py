@@ -11,24 +11,25 @@ import numpy as np
 from stagpy import field
 from stagpy import stagyydata
 import matplotlib.pyplot as plt
-model = 'TC_2D-SPH_2C_HR023'
-model = 'h13'
+model = 'kvar_a0101'
+# model = 'h13'
 path = '/Users/chingchen/Desktop/data/'
-path = '/lfs/jiching/ScalingLaw_model/23summer/'
+# path = '/lfs/jiching/ScalingLaw_model/23summer/'
 #path = '/lfs/jiching/thermo_chemical/'
-figpath = '/Users/chingchen/Desktop/figure/'
+path = '/lfs/jiching/thermal_conductivity/'
+# path = '/Users/chingchen/Desktop/model/'
+# figpath = '/Users/chingchen/Desktop/figure/'
 figpath = '/lfs/jiching/figure/'
 
-#plt.rcParams["font.family"] = "Times New Roman"
 data = stagyydata.StagyyData(path+model)
 plotting_3field = 0
 plotting_Tv = 0
 plotting_T = 1
 plotting_bs = 0
 plotting_prim = 0
-gif = 0
-mp4 = 0
-end = 600
+gif = 1
+mp4 = 1
+end = 290
 if plotting_3field:
     for shot in range(end-2,end):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'T')
@@ -137,7 +138,7 @@ if plotting_T:
         plt.close(fig)
 
 if plotting_bs:
-    for shot in range(1,2001,5):
+    for shot in range(1,end,2):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'bs')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
@@ -166,7 +167,7 @@ if plotting_bs:
         plt.close(fig)
 
 if plotting_prim:
-    for shot in range(1,2001,5):
+    for shot in range(1,end,2):
         kk1,kk2,kk3,kk4 = field.get_meshes_fld(data.snaps[shot],'prim')
         ### Cause the mesh lack one column, 
         ### need to concatenate it for xmesh, ymseh and field
@@ -204,20 +205,20 @@ if gif:
         frames.append(new_frame)
     frames[0].save(figpath+'png_to_gif.gif', format='GIF', append_images=frames[1:], 
                    save_all=True, duration=40, loop=0)
-#    frames = []
-#    for shot in  range(1,2001,5):
-#        img=figpath+model+'_'+'Basalt_snapshot_'+str(shot)+'_field.png'
-#        new_frame = Image.open(img)
-#        frames.append(new_frame)
-#    frames[0].save(figpath+'png_to_gif2.gif', format='GIF', append_images=frames[1:], 
-#                   save_all=True, duration=40, loop=0)
-#    frames = []
-#    for shot in  range(1,2001,5):
-#        img=figpath+model+'_'+'Primordial_snapshot_'+str(shot)+'_field.png'
-#        new_frame = Image.open(img)
-#        frames.append(new_frame)
-#    frames[0].save(figpath+'png_to_gif3.gif', format='GIF', append_images=frames[1:], 
- #                  save_all=True, duration=40, loop=0)
+    # frames = []
+    # for shot in  range(1,end,2):
+    #     img=figpath+model+'_'+'Basalt_snapshot_'+str(shot)+'_field.png'
+    #     new_frame = Image.open(img)
+    #     frames.append(new_frame)
+    # frames[0].save(figpath+'png_to_gif2.gif', format='GIF', append_images=frames[1:], 
+    #               save_all=True, duration=40, loop=0)
+    # frames = []
+    # for shot in  range(1,end,2):
+    #     img=figpath+model+'_'+'Primordial_snapshot_'+str(shot)+'_field.png'
+    #     new_frame = Image.open(img)
+    #     frames.append(new_frame)
+    # frames[0].save(figpath+'png_to_gif3.gif', format='GIF', append_images=frames[1:], 
+    #                save_all=True, duration=40, loop=0)
 
 #    for shot in  range(1,2001,5):
 #        img=figpath+model+'_'+'snapshot_'+str(shot)+'_3field.png'
