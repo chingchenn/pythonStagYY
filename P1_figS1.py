@@ -13,8 +13,6 @@ from matplotlib import cm
 import matplotlib  as mpl
 from scipy.misc import derivative
 import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
-from plot_time_vs_pow import hat_graph
 
 
 labelsize = 20
@@ -89,4 +87,4 @@ for aa in [ax]:
     aa.grid()
     for axis in ['top','bottom','left','right']:
         aa.spines[axis].set_linewidth(bwith)
-fig.savefig('/Users/chingchen/Desktop/StagYY_Works/figure/figureS1_v1.pdf')
+# fig.savefig('/Users/chingchen/Desktop/StagYY_Works/figure/figureS1_v1.pdf')

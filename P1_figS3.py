@@ -1,59 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 23 15:35:44 2024
+Created on Wed Oct 23 15:35:26 2024
 
 @author: chingchen
 """
 
-
 import pandas as pd
 import numpy as np
 import numpy.ma as ma
-from matplotlib import cm
-import matplotlib  as mpl
-from scipy.misc import derivative
+# from matplotlib import cm
+# import matplotlib  as mpl
+# from scipy.misc import derivative
 import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
+# from scipy.signal import find_peaks
 
-def hat_graph(ax, xlabels, values, group_labels):
-    """
-    Create a hat graph.
-
-    Parameters
-    ----------
-    ax : matplotlib.axes.Axes
-        The Axes to plot into.
-    xlabels : list of str
-        The category names to be displayed on the x-axis.
-    values : (M, N) array-like
-        The data values.
-        Rows are the groups (len(group_labels) == M).
-        Columns are the categories (len(xlabels) == N).
-    group_labels : list of str
-        The group labels displayed in the legend.
-    """
-
-    def label_bars(heights, rects):
-        """Attach a text label on top of each bar."""
-        for height, rect in zip(heights, rects):
-            ax.annotate(f'{height}',
-                        xy=(rect.get_x() + rect.get_width() / 2, height),
-                        xytext=(0, 2),  # 4 points vertical offset.
-                        textcoords='offset points',
-                        ha='center', va='bottom',fontsize=14)
-
-    values = np.asarray(values)
-    x = np.arange(values.shape[1])
-    ax.set_xticks(x, labels=xlabels)
-    spacing = 0.3  # spacing between hat groups
-    width = (1 - spacing) / values.shape[0]
-    heights0 = values[0]
-    for i, (heights, group_label) in enumerate(zip(values, group_labels)):
-        style = {'fill': False} if i == 0 else {'edgecolor': 'black'}
-        rects = ax.bar(x, heights - heights0,
-                       width, bottom=heights0, label=group_label, **style)
-        label_bars(heights, rects)
 labelsize = 20
 bwith = 3
 
@@ -63,190 +24,73 @@ workpath = '/Users/chingchen/Desktop/StagYY_Works/thermal_evolution_v2/'
 modelpath = '/Users/chingchen/Desktop/model/'
 figpath = '/Users/chingchen/Desktop/figure/'
 colors=['#282130','#3CB371','#4682B4','#CD5C5C','#97795D','#414F67','#4198B9','#3CB371']
-
-
 header_list = ['time_Gyr','Prad','Ptidal','Fcore','Pint','Hint','conv',
                'melt','P','zbot','%vol','Tbot','Tm','Fbot','Ftop','dlid','T_core']
 
-# 
-fig,(aa1,aa2) = plt.subplots(2,2,figsize=(18,14))
-ax=aa1[0]
-ax2=aa2[0]
-axx=aa1[1]
-axx3=aa2[1]
-# ---------------------------------------- figure --------------------------------
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.1TW_2.0wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.3TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.5TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.6TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.8TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P1.0TW_2.0wt%_D5.0km-NH3',]
 
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.1TW_2.0wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.3TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.5TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.6TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.8TW_2.0wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_2.0wt%_D5.0km-NH3',]
-
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.1TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P0.6TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P1.0TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d13_P1.2TW_1.5wt%_D5.0km-NH3',]
-
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta5.6d13_P0.6TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta5.6d13_P0.8TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta5.6d13_P1.0TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta5.6d13_P1.2TW_1.5wt%_D5.0km-NH3',]
-label_list=['0.1 TW','0.3 TW','0.5 TW','0.6 TW','0.8 TW','1.0 TW']#,'P = 1.2 Tw','P = 1.4 Tw']
-label_list=['P = 0.1 TW','P = 0.6 TW','P = 1.0 TW','P = 1.2 TW']
-label_list=['0.6 TW','0.8 TW','1.0 TW','1.2 TW']#,'P = 1.4 Tw']
-
-# rainbow = cm.get_cmap('winter',len(model_list))
-# colors = rainbow(np.linspace(0, 1, len(model_list)+1))
-min_zbot = []
-max_zbot = []
-amplitude_zbot=[]
-for i, model in enumerate(model_list):
-    i = i
-    data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
-        header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
-    data = data.replace('D','e',regex=True).astype(float) # data convert to float
-    x = data.time_Gyr
-    mask_cond = data.conv
-    mask_conv = ~ma.array(data.zbot, mask = data.conv).mask
-    zbot_cond = ma.array(data.zbot, mask = mask_cond)
-    zbot_conv = ma.array(data.zbot, mask = mask_conv)
-    ax.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
-    ax.plot(x,zbot_cond,color=colors[i],linestyle='dashed')
-    # fig2,(am) = plt.subplots(1,1,figsize=(8,8))
-    # am.plot(x,data['melt'],color='orange',lw=2)
-    # am.set_title(model)
-    #------------------------------------------------------------------------------------------
-    peaks, _ = find_peaks(zbot_conv)
-    mins, _  = find_peaks(zbot_conv*-1)
-    if len(zbot_conv[peaks])>20:
-        amplitude_zbot.append(np.median(zbot_conv[peaks][10:19]-zbot_conv.data[mins][10:19]))
-    else:
-        print('---- HELP ----')      
-    mask_cond = data.conv[data.time_Gyr>1.5]
-    mask_conv = ~ma.array(data.zbot[data.time_Gyr>1.5], mask = data.conv[data.time_Gyr>1.5]).mask
-    
-    zbot_cond = ma.array(data.zbot[data.time_Gyr>1.5], mask = mask_cond)
-    zbot_conv = ma.array(data.zbot[data.time_Gyr>1.5], mask = mask_conv)
-    min_zbot.append(np.min(zbot_conv))
-    max_zbot.append(np.max(zbot_conv))
-    
-# fig2,(axx,axx3) = plt.subplots(2,1,figsize=(10,12))
-playerA = np.array(max_zbot)
-playerB = np.array(min_zbot)
-hat_graph(axx, label_list, [playerA, playerB], ['Player A', 'Player B'])
-axx.set_ylim(161,0)
-axx.set_ylabel('ice layer thickness (km)',fontsize = labelsize)
-axx.tick_params(labelsize=labelsize,width=3,length=10,right=False, top=True,direction='in',pad=10)
-
-model_list = ['Europa-tidal1_eta3.2d13_P0.1TW_1.5wt%-NH3', # power
-                'Europa-tidal1_eta3.2d13_P0.6TW_1.5wt%-NH3',
-                'Europa-tidal1_eta3.2d13_P1.0TW_1.5wt%-NH3',
-                'Europa-tidal1_eta3.2d13_P1.2TW_1.5wt%-NH3',]
-model_list = ['Europa-tidal1_eta5.6d13_P0.6TW_1.5wt%-NH3', # power
-              'Europa-tidal1_eta5.6d13_P0.8TW_1.5wt%-NH3',
-              'Europa-tidal1_eta5.6d13_P1.0TW_1.5wt%-NH3',
-              'Europa-tidal1_eta5.6d13_P1.2TW_1.5wt%-NH3',]
-
-
-for i, model in enumerate(model_list):
-    i = i
-    data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
-        header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
-    data = data.replace('D','e',regex=True).astype(float) # data convert to float
-    x = data.time_Gyr
-    mask_cond = data.conv
-    mask_conv = ~ma.array(data.zbot, mask = data.conv).mask
-    zbot_cond = ma.array(data.zbot, mask = mask_cond)
-    zbot_conv = ma.array(data.zbot, mask = mask_conv)
-    ax.plot(x,zbot_conv,color=colors[i],lw=3)
-    # ax.plot(x,zbot_cond,color=colors[i],linestyle='dashed')  
-    
-# ---------------------------------------- figure 2 --------------------------------
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.1TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.6TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_1.5wt%_D5.0km-NH3',]
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.1TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.6TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.2TW_1.5wt%_D5.0km-NH3',
-              ]
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta3.2d14_P0.6TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d14_P0.8TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d14_P1.0TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d14_P1.2TW_1.5wt%_D5.0km-NH3',
-              ]
-
-# rainbow = cm.get_cmap('winter',len(model_list))
-# colors = rainbow(np.linspace(0, 1, len(model_list)+1))
-min_zbot = []
-max_zbot = []
-amplitude_zbot=[]
-for i, model in enumerate(model_list):
-    data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
-        header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
-    data = data.replace('D','e',regex=True).astype(float) # data convert to float
-    x = data.time_Gyr
-    mask_cond = data.conv
-    mask_conv = ~ma.array(data.zbot, mask = data.conv).mask
-    zbot_cond = ma.array(data.zbot, mask = mask_cond)
-    zbot_conv = ma.array(data.zbot, mask = mask_conv)
-    ax2.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
-    ax2.plot(x,zbot_cond,color=colors[i],linestyle='dashed')    
-    # fig2,(am) = plt.subplots(1,1,figsize=(8,8))
-    # am.plot(x,data['melt'],color='orange',lw=2)
-    # am.set_title(model)
-    #------------------------------------------------------------------------------------------
-    peaks, _ = find_peaks(zbot_conv)
-    mins, _  = find_peaks(zbot_conv*-1)
-    if len(zbot_conv[peaks])>20:
-        amplitude_zbot.append(np.median(zbot_conv[peaks][10:19]-zbot_conv.data[mins][10:19]))
-    else:
-        print('---- HELP ----')      
-    mask_cond = data.conv[data.time_Gyr>1.5]
-    mask_conv = ~ma.array(data.zbot[data.time_Gyr>1.5], mask = data.conv[data.time_Gyr>1.5]).mask
-    
-    zbot_cond = ma.array(data.zbot[data.time_Gyr>1.5], mask = mask_cond)
-    zbot_conv = ma.array(data.zbot[data.time_Gyr>1.5], mask = mask_conv)
-    min_zbot.append(np.min(zbot_conv))
-    max_zbot.append(np.max(zbot_conv))
-
-model_list = ['Europa-tidal1_eta1.0d14_P0.1TW_1.5wt%-NH3', # power
-              'Europa-tidal1_eta1.0d14_P0.6TW_1.5wt%-NH3',
+fig,(axa,axb) = plt.subplots(2,2,figsize=(17,11))
+ax1=axa[0]
+ax2=axa[1]
+ax3=axb[0]
+ax4=axb[1]
+##---------------------------------------- figure 1 zbot --------------------------------
+model_list = ['Europa-tidal1_eta1.0d14_P1.0TW_0.0wt%-NH3',
               'Europa-tidal1_eta1.0d14_P1.0TW_1.5wt%-NH3',
-              'Europa-tidal1_eta1.0d14_P1.2TW_1.5wt%-NH3',]
-model_list = ['Europa-tidal1_eta3.2d14_P0.6TW_1.5wt%-NH3', # power
-              'Europa-tidal1_eta3.2d14_P0.8TW_1.5wt%-NH3',
-              'Europa-tidal1_eta3.2d14_P1.0TW_1.5wt%-NH3',
-              'Europa-tidal1_eta3.2d14_P1.2TW_1.5wt%-NH3',]
-
-
+              'Europa-tidal1_eta1.0d14_P1.0TW_3.0wt%-NH3',
+              ]
+label_list=['vol = 0.%','vol = 1.5%','vol = 3.0%']
 for i, model in enumerate(model_list):
-    i = i
     data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
         header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
     data = data.replace('D','e',regex=True).astype(float) # data convert to float
     x = data.time_Gyr
     mask_cond = data.conv
-    mask_conv = ~ma.array(data.zbot, mask = data.conv).mask
-    zbot_cond = ma.array(data.zbot, mask = mask_cond)
-    zbot_conv = ma.array(data.zbot, mask = mask_conv)
+    mask_conv = ~ma.array(data.Tm, mask = data.conv).mask
+    zbot_cond = ma.array(data.Tm, mask = mask_cond)
+    zbot_conv = ma.array(data.Tm, mask = mask_conv)
+    ax1.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
+    ax1.plot(x,zbot_cond,color='darkred')  
+    print(np.max(data.zbot[data.time_Gyr>2.5]),np.mean(data.zbot[data.time_Gyr>2.5]),np.min(data.zbot[data.time_Gyr>2.5]))
+# ---------------------------------------- figure 3 dlid --------------------------------
+    mask_cond = data.conv
+    mask_conv = ~ma.array(data.Ftop, mask = data.conv).mask
+    zbot_cond = ma.array(data.Ftop, mask = mask_cond)
+    zbot_conv = ma.array(data.Ftop, mask = mask_conv)
+    ax3.plot(x,zbot_conv,color=colors[i],lw=3)
+    ax3.plot(x,zbot_cond,color='darkred') 
+    # print(np.max(data.dlid[data.time_Gyr>2.5]),np.mean(data.dlid[data.time_Gyr>2.5]),np.min(data.dlid[data.time_Gyr>2.5]))
+# ---------------------------------------- figure 2 zbot --------------------------------
+model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_0.0wt%_D5.0km-NH3',# composition
+              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_1.5wt%_D5.0km-NH3',
+              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_3.0wt%_D5.0km-NH3',
+              ]
+for i, model in enumerate(model_list):
+    data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
+        header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
+    data = data.replace('D','e',regex=True).astype(float) # data convert to float
+    x = data.time_Gyr
+    mask_cond = data.conv
+    mask_conv = ~ma.array(data.Tm, mask = data.conv).mask
+    zbot_cond = ma.array(data.Tm, mask = mask_cond)
+    zbot_conv = ma.array(data.Tm, mask = mask_conv)
     ax2.plot(x,zbot_conv,color=colors[i],lw=3)
-    ax2.plot(x,zbot_cond,color=colors[i],linestyle='dashed')  
+    ax2.plot(x,zbot_cond,color='darkred')   
+    # print(np.max(data.zbot[data.time_Gyr>2.5]),np.mean(data.zbot[data.time_Gyr>2.5]),np.min(data.zbot[data.time_Gyr>2.5]))
+# 
+# # ---------------------------------------- figure 4 dild --------------------------------
+    x = data.time_Gyr
+    mask_cond = data.conv
+    mask_conv = ~ma.array(data.Ftop, mask = data.conv).mask
+    zbot_cond = ma.array(data.Ftop, mask = mask_cond)
+    zbot_conv = ma.array(data.Ftop, mask = mask_conv)
+    ax4.plot(x,zbot_conv,color=colors[i],lw=3)
+    ax4.plot(x,zbot_cond,color='darkred')   
+    # print(np.max(data.zbot[data.time_Gyr>2.5]),np.mean(data.zbot[data.time_Gyr>2.5]),np.min(data.zbot[data.time_Gyr>2.5]))
 #  ------------------------------ figure setting ------------------------------
-ax.set_ylim(161,0)
-ax2.set_ylim(161,0)
-ax2.legend(fontsize=labelsize)
-ax2.set_xlabel('time (Gyr)',fontsize=labelsize)
-
-for aa in [ax,ax2]:
-    aa.set_ylabel('ice layer thickness (km)',fontsize = labelsize)
+ax1.legend(fontsize=labelsize-2)
+for aa in [ax1,ax2]:
+    aa.set_ylim(240,275)
+    aa.set_ylabel('T$_m$',fontsize = labelsize)
     aa.minorticks_on()
     aa.tick_params(which='minor', length=5, width=2, direction='in')
     aa.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
@@ -254,15 +98,16 @@ for aa in [ax,ax2]:
     aa.grid()
     for axis in ['top','bottom','left','right']:
         aa.spines[axis].set_linewidth(bwith)
-playerA = np.array(max_zbot)
-playerB = np.array(min_zbot)
-hat_graph(axx3, label_list, [playerA, playerB], ['Player A', 'Player B'])
-axx3.set_ylim(161,0)
-axx3.set_ylabel('ice layer thickness (km)',fontsize = labelsize)
-axx3.tick_params(labelsize=labelsize,width=3,length=10,right=False, top=True,direction='in',pad=10)
-for aa in [axx,axx3]:
-    axx3.set_xlabel('internal power (TW)',fontsize=labelsize)
-    for axis in ['top','bottom','left','right']:
-        aa.spines[axis].set_linewidth(bwith)
-    aa.grid()
-fig.savefig('/Users/chingchen/Desktop/StagYY_Works/figure/figureS3_v2.pdf')
+for aa in [ax3,ax4]:
+   aa.tick_params(labelsize=labelsize,width=3,length=10,right=True, top=True,direction='in',pad=15)
+   aa.set_xlim(0,4.55)
+   aa.set_ylim(0,100)
+   aa.set_ylabel('Surface heat flux',fontsize = labelsize)
+   aa.grid()
+   aa.set_xlabel('Time (Gyr)',fontsize=labelsize)
+   for axis in ['top','bottom','left','right']:
+       aa.spines[axis].set_linewidth(bwith)
+
+ax1.set_title('viscosity = 10$^{14}$ with constant total power = 1.0 TW',fontsize=labelsize-2)
+ax2.set_title('viscosity = 10$^{14}$ with varying total power = 1.0 TW ',fontsize=labelsize-2)
+# fig.savefig('/Users/chingchen/Desktop/StagYY_Works/paper_europa_ice_shell/figureS3_v4.pdf')

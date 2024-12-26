@@ -45,13 +45,8 @@ model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d13_P1.2TW_1.5wt%_D5.0km
               'Europa-tidal5_period0.14Gyr_emx10%_eta3.2d14_P1.2TW_1.5wt%_D5.0km-NH3',
               ]
 
-# label_list=['1e12','eta = 3.2e12','eta = 1e13','eta = 3.2e13','eta = 1e14','eta = 3.2e14','eta = 1e15']
-# label_list=['1e12','3.2e12','1e13','3.2e13','1e14','3.2e14','1e15']
-label_list=['eta = 1e13','eta = 3.2e13','eta = 1e14','eta = 3.2e14']
 label_list=['1e13 Pa s','3.2e13 Pa s','5.6e13 Pa s','1e14 Pa s',]
 label_list=['10$^{13}$','10$^{13.5}$','10$^{13.75}$','10$^{14}$','10$^{14.5}$']
-# label_list = ['5%','10%','15%','20%','30%','50%']
-
 
 min_zbot = []
 max_zbot = []

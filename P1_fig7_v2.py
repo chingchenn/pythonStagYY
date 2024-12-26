@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 23 14:50:46 2024
+Created on Fri Oct 25 14:46:46 2024
 
 @author: chingchen
 """
+
 
 import pandas as pd
 import numpy as np
@@ -74,11 +75,12 @@ ax2=aa1[1]
 ax3=aa2[0]
 ax4=aa2[1]
 # ---------------------------------------- figure --------------------------------
-model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.6TW_1.5wt%_D5.0km-NH3', # power
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P0.8TW_1.5wt%_D5.0km-NH3',
+model_list = ['Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_0.0wt%_D5.0km-NH3',# composition
               'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_1.5wt%_D5.0km-NH3',
-              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.2TW_1.5wt%_D5.0km-NH3',]
-label_list=['0.6 TW','0.8 TW','1.0 TW','1.2 TW']#,'P = 1.4 TW']
+              'Europa-tidal5_period0.14Gyr_emx10%_eta1.0d14_P1.0TW_3.0wt%_D5.0km-NH3',
+              ]
+
+label_list=['0%','1.5%','3.0%']
 
 min_zbot = []
 max_zbot = []
@@ -94,7 +96,6 @@ for i, model in enumerate(model_list):
     zbot_cond = ma.array(data.zbot, mask = mask_cond)
     zbot_conv = ma.array(data.zbot, mask = mask_conv)
     ax.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
-    # ax.plot(x,zbot_cond,color=colors[i],linestyle='dashed')
     
     #------------------------------------------------------------------------------------------
     peaks, _ = find_peaks(zbot_conv)
@@ -118,8 +119,6 @@ for i, model in enumerate(model_list):
     zbot_cond = ma.array(data.dlid, mask = mask_cond)
     zbot_conv = ma.array(data.dlid, mask = mask_conv)
     ax3.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
-    # ax3.plot(x,zbot_cond,color=colors[i],linestyle='dashed')
-    
     
     #---------------------------------------------- Tm ---------------------------------------
     mask_cond = data.conv
@@ -127,7 +126,6 @@ for i, model in enumerate(model_list):
     zbot_cond = ma.array(data.Tm, mask = mask_cond)
     zbot_conv = ma.array(data.Tm, mask = mask_conv)
     ax4.plot(x,zbot_conv,color=colors[i],label=label_list[i],lw=3)
-    # ax4.plot(x,zbot_cond,color=colors[i],linestyle='dashed')
     
     
 playerA = np.array(max_zbot)
@@ -136,35 +134,17 @@ hat_graph(ax2, label_list, [playerA, playerB], ['Player A', 'Player B'])
 ax2.set_ylim(161,0)
 ax2.set_ylabel('Ice layer thickness (km)',fontsize = labelsize)
 ax2.tick_params(labelsize=labelsize,width=3,length=10,right=False, top=True,direction='in',pad=10)
-model_list = ['Europa-tidal1_eta1.0d14_P0.6TW_1.5wt%-NH3', # power
-              'Europa-tidal1_eta1.0d14_P0.8TW_1.5wt%-NH3',
-              'Europa-tidal1_eta1.0d14_P1.0TW_1.5wt%-NH3',
-              'Europa-tidal1_eta1.0d14_P1.2TW_1.5wt%-NH3',]
-
-for i, model in enumerate(model_list):
-    i = i
-    data = pd.read_csv(workpath+model+'_Hvar_2_thermal-evolution.dat',
-        header=None,names=header_list,delim_whitespace=True)[2:].reset_index(drop=True)
-    data = data.replace('D','e',regex=True).astype(float) # data convert to float
-    x = data.time_Gyr
-    mask_cond = data.conv
-    mask_conv = ~ma.array(data.zbot, mask = data.conv).mask
-    zbot_cond = ma.array(data.zbot, mask = mask_cond)
-    zbot_conv = ma.array(data.zbot, mask = mask_conv)
-    ax.plot(x,zbot_conv,color=colors[i],lw=3)
-
 
 
 #  ------------------------------ figure setting ------------------------------
-# ax.legend(fontsize=labelsize)
+ax.legend(fontsize=labelsize)
 ax.set_ylim(161,0)
 ax2.set_ylim(161,0)
 ax3.set_ylim(20,5)
-ax4.set_ylim(255,275)
+ax4.set_ylim(240,275)
 
 ax.set_ylabel('Ice layer thickness (km)',fontsize = labelsize)
-ax2.set_xlabel('Internal power (TW)',fontsize=labelsize)
-ax2.set_xlabel('Internal power (TW)',fontsize=labelsize)
+ax2.set_xlabel('wt% of ammonia ',fontsize=labelsize)
 ax3.set_ylabel('Stagnant lid thickness (km)',fontsize = labelsize)
 ax4.set_ylabel('T$_m$ (K)',fontsize = labelsize)
 for aa in [ax,ax3,ax4]:
@@ -183,4 +163,4 @@ for aa in [ax2]:
     aa.grid()
     
 
-# fig.savefig('/Users/chingchen/Desktop/StagYY_Works/paper_europa_ice_shell/figure4_v6.pdf')
+# fig.savefig('/Users/chingchen/Desktop/StagYY_Works/paper_europa_ice_shell/figure7_v3.pdf')

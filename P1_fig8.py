@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct 17 17:12:46 2024
+Created on Thu Oct 17 17:08:14 2024
 
 @author: chingchen
 """
@@ -19,7 +19,7 @@ import matplotlib.ticker as ticker
 labelsize = 30
 fontsize = 30
 bwith = 3
-tmax=80
+tmax=150
 tmin=0
 smax=20
 smin=0
@@ -30,7 +30,8 @@ workpath = '/Users/chingchen/Desktop/StagYY_Works/Thermal_evolution_20240826/'
 modelpath = '/Users/chingchen/Desktop/model/'
 figpath = '/Users/chingchen/Desktop/figure/'
 colors=['#282130','#3CB371','#4682B4','#CD5C5C','#97795D','#414F67','#4198B9','#3CB371']
-
+header_list = ['Pint','etaref','pCLA',
+               'zbot_avg','zbot_min','zbot_max']
 ###------------------------------ figure two meshed ------------------------------
 fig2,(ax5,ax6) = plt.subplots(1,2,figsize=(26,11))
 plt.subplots_adjust(left=None, bottom=0.2, right=None, top=None, wspace=None, hspace=None)
@@ -62,24 +63,24 @@ for uu in range(len(power_mesh[0])):
         power_mesh[mm,:] = np.array(data.Pint[data.etaref==1e13])
         pp = power_mesh[mm,uu]
         vv = vis_mesh[mm,uu]
-        ice_thickness[mm,uu]=data.zbot_avg[data.Pint==pp][data.etaref==vv]
+        ice_thickness[mm,uu]=data.zbot_min[data.Pint==pp][data.etaref==vv]
 for uu in range(len(power_mesh2[0])):
     vis_mesh2[:,uu] = np.array(data2.etaref[data2.Pint==0])
     for mm in range(len(power_mesh2)):
         power_mesh2[mm,:] = np.array(data2.Pint[data2.etaref==1e13])
         pp = power_mesh2[mm,uu]
         vv = vis_mesh2[mm,uu]        
-        stg_thickness[mm,uu]=data2.zlid_avg[data2.Pint==pp][data2.etaref==vv]
+        stg_thickness[mm,uu]=data2.zlid_min[data2.Pint==pp][data2.etaref==vv]
 qqq=ax5.pcolormesh(power_mesh/1e12,vis_mesh,ice_thickness,cmap='magma_r',vmin=tmin,vmax=tmax)    
 kkk=ax6.pcolormesh(power_mesh2/1e12,vis_mesh2,stg_thickness,cmap='magma_r',vmin=smin,vmax=smax)  
 
-ax5.contour(power_mesh/1e12,vis_mesh,ice_thickness, levels=[15], colors='white',linestyle='dashed')
+ax5.contour(power_mesh/1e12,vis_mesh,ice_thickness, levels=[10], colors='white',linestyle='dashed')
 ax5.contour(power_mesh/1e12,vis_mesh,ice_thickness, levels=[20], colors='white')
 ax5.contour(power_mesh/1e12,vis_mesh,ice_thickness, levels=[47], colors='white',linewidths=3)
 ax5.contour(power_mesh/1e12,vis_mesh,ice_thickness, levels=[24.2], colors='white',linewidths=5)
 
 ax6.contour(power_mesh/1e12,vis_mesh2,stg_thickness, levels=[6,8], colors='white',linewidths=3)
-ax6.contour(power_mesh/1e12,vis_mesh2,stg_thickness, levels=[10,12], colors='white',linewidths=5)
+ax6.contour(power_mesh/1e12,vis_mesh2,stg_thickness, levels=[10,15], colors='white',linewidths=5)
 #  ------------------------------ figure setting ------------------------------
 ax5.set_xlabel('Tidal power (TW)',fontsize=labelsize)
 ax6.set_xlabel('Tidal power (TW)',fontsize=labelsize)
@@ -114,6 +115,6 @@ cb1.set_label('Stagnant lid thickness',fontsize=labelsize+5)
 cb1.ax.tick_params(axis='x', labelsize=labelsize-2)
 # cb1.ax.yaxis.set_label_position('bottom')
 
-ax5.set_title('(c) average ice shell thickness',fontsize=labelsize)
-ax6.set_title('(d) average stagnant lid thickness',fontsize=labelsize)
-fig2.savefig('/Users/chingchen/Desktop/StagYY_Works/paper_europa_ice_shell/figureS7_v4.pdf')
+ax5.set_title('(a) min ice shell thickness',fontsize=labelsize)
+ax6.set_title('(b) min stagnant lid thickness',fontsize=labelsize)
+# fig2.savefig('/Users/chingchen/Desktop/StagYY_Works/paper_europa_ice_shell/figure8_v3.pdf')
